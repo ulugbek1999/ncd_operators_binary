@@ -1,0 +1,401 @@
+{{ define "operator_1" }}
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Оператор 1</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap -->
+        <link href="/static/operator/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/static/operator/bootstrap/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
+        <link href="/static/operator/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+        <link rel="stylesheet" href="/static/operator/js/datepicker/bootstrap-datepicker.css" />
+        <!-- styles -->
+        <link href="/static/operator/css/alerty.css" rel="stylesheet">
+        <link href="/static/operator/css/styles.css" rel="stylesheet">
+        <link href="/static/operator/css/media.css" rel="stylesheet">
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="/static/operator/js/jquery.js"></script>
+        <script src="/static/operator/js/csrf.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="/static/operator/bootstrap/js/bootstrap.min.js"></script>
+        <script src="/static/operator/js/jquery.inputmask.bundle.js"></script>
+        <script src="/static/operator/bootstrap/bootstrap-select/js/bootstrap-select.min.js"></script>
+        <script src="/static/operator/js/datepicker/bootstrap-datepicker.js"></script>
+        <script src="/static/operator/js/alerty.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    </head>
+    <body>
+
+    <section class="page-content">
+        <div class="sidebar">
+            <div class="sidebar-box">
+                <div class="sidebar-header">
+                    <div class="hader-logo">
+                        <img src="/static/operator/images/logo.svg" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="content-box">
+                <div class="content-header">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="content-header__right">
+                                <div class="content-header__time">
+                                    <h2 id="time"></h2>
+                                </div>
+                                <div class="content-header__user">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                        <i class="fa fa-user fa-fw"></i> <span>{{ .user.Username }}</span> <i class="fa fa-caret-down"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user">
+                                        <li>
+                                            <a href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-gear fa-fw"></i> Настройки</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a href="/logout"><i class="fa fa-sign-out fa-fw"></i>Выйти</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <link rel="stylesheet" href="/static/operator/fancybox/jquery.fancybox.min.css">
+                <div class="content-title">
+                    <h2>Зарегистрировать аппликанта</h2>
+                    <span>№: {{ .register_number }} </span>
+                </div>
+                <div class="card-main">
+                    <div class="card-main__header">
+                        <h2>Личная карточка аппликанта</h2>
+                    </div>
+                    <div class="card-main__content">
+                        <form>
+                            <input id="group-id" type="hidden" value="1">
+                            <div class="col-md-4">
+                                <div class="stol1-col-form">
+                                    <div class="form-group">
+                                        <label for="fullNameEn">Ф.И.О (англ)</label>
+                                        <input name="full_name_en" type="text" class="form-control" id="fullNameEn">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="passportSerial">Серия паспорта</label>
+                                        <input name="passport_serial" type="text" class="form-control" id="passportSerial">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="birthDate">Дата рождения</label>
+                                        <input name="birth_date" type="text" class="datepickerFrom form-control" data-date-format="dd.mm.yyyy" autocomplete="off" id="birthDate">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="passportExpires">Срок действия</label>
+                                        <input name="passport_expires" type="text" class="datepickerFrom form-control" data-date-format="dd.mm.yyyy" autocomplete="off" id="passportExpires">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Пол</label>
+                                        <div class="radio-group">
+                                            <input type="radio" id="gender_male" name="gender" value="m" checked>
+                                            <label for="gender_male">
+                                                <img src="/static/operator/images/man.svg" alt="">
+                                            </label>
+                                        </div>
+                                        <div class="radio-group">
+                                            <input type="radio" id="gender_female" name="gender" value="f">
+                                            <label for="gender_female">
+                                                <img src="/static/operator/images/woman.svg" alt="">
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="overflow: hidden; width: 100%; padding-top: 25px;">
+                                        <label for="login">Логин (не обязательно)</label>
+                                        <input name="login" type="text" class="form-control" id="login">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="stol1-col-form">
+                                    <div class="form-group">
+                                        <label for="fullNameRu">Ф.И.О (русс)</label>
+                                        <input name="full_name_ru" type="text" class="form-control" id="fullNameRu">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phone">Телефон</label>
+                                        <input name="phone" type="text" class="form-control" id="phone">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Э-почта</label>
+                                        <input name="email" type="text" class="form-control" id="email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="passportGivendate">Дата выдачи</label>
+                                        <input name="passport_given_date" type="text" class="datepickerFrom form-control" data-date-format="dd.mm.yyyy" autocomplete="off" id="passportGivendate">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inn">ИНН</label>
+                                        <input name="inn" type="text" class="form-control" id="inn">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="birthPlace">Место рождения (русс)</label>
+                                        <input name="birth_place" list="birthPlace_list" type="text" class="form-control" id="birthPlace" autocomplete="off">
+                                        <datalist id="birthPlace_list">
+                                        </datalist>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="livesAt">Место проживания (русс)</label>
+                                        <input name="lives_at" list="livesAt_list" type="text" class="form-control" id="livesAt" autocomplete="off">
+                                        <datalist id="livesAt_list">
+                                        </datalist>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="registerNumber">Регистрационный номер</label>
+                                        <input style="cursor: unset !important" name="register_number" type="text" class="form-control" id="registerNumber" value="{{ .register_number }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="photos-upload__main">
+                                    <div class="avatar-upload">
+                                        <div class="avatar-edit">
+                                            <input type='file' name="passport_file" id="passportUpload" accept=".png, .jpg, .jpeg" />
+                                            <label for="passportUpload"></label>
+                                        </div>
+                                        <a data-fancybox href="#">
+                                            <div class="avatar-preview">
+                                                <div id="passportPreview">
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <div class="avatar-upload__button">
+                                            <div class="pasport-icon">
+                                                <img src="/static/operator/images/passport.svg" style="width: 75px">
+                                            </div>
+                                            <label>Копия паспорта</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="send-message">
+                                    <div class="form-title">
+                                        <h2>Отправить имя пользователя и пароль пользователю</h2>
+                                    </div>
+                                    <div class="send-message__main">
+                                        <div class="form-group checkbox-form">
+                                            <div class="checkbox-group">
+                                                <input type="checkbox" id="sendSMS" name="send_sms" checked>
+                                                <label for="sendSMS">
+                                                    <span>SMS</span>
+                                                </label>
+                                            </div>
+                                            <div class="checkbox-group">
+                                                <input type="checkbox" id="sendEmail" name="send_email">
+                                                <label for="sendEmail">
+                                                    <span>E-mail</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-send__buttons">
+                                <div class="form-send__button" id="formSendButton" data-url="/api/operator-1/create">
+                                    <button type="submit">Сохранить</button>
+                                </div>
+                                <div class="form-reset__buttton">
+                                    <button type="reset">Очистить</button>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div id="wsSuccess">Обнаружен сканер паспорта</div>
+                <div id="wsError">Сканнер паспорта не найден</div>
+                <div class="sideRight">
+                    <div class="help-block">
+                        <div class="help-block__icon">
+                            <a href="#">
+                                <i class="fa fa-book" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="bx-informer">
+                        <div class="bx-im-informer-icon">
+                            <div class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle waves-effect waves-dark" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bell" aria-hidden="true"></i></a>
+                                <div class="dropdown-menu dropdown-menu-right animated flipInY">
+                                    <ul class="dropdown-not">
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="operator2Notification">
+                                <span id="notification-counter">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bx-informer">
+                        <div class="bx-im-informer-icon" style="background: #05b5ab;">
+                            <a href="#" title="Список аппликантов">
+                                <i class="fa fa-list-alt" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="bx-search">
+                        <div class="bx-im-search-icon">
+                            <a href="#">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <script src="/static/operator/fancybox/jquery.fancybox.min.js"></script>
+
+                <script src="/static/operator/js/stol/operator1.js"></script>
+                <script>
+                    // TODO cities list
+                    $(function () {
+                        var regions = "";
+                        $.ajax({
+                            url: "/api/cities/list",
+                            type: 'GET',
+                            success: function (data) {
+                                for (var i=0; i<data.length; i++) {
+                                    for (var j = 0; j < data[i].districts.length; j++) {
+                                        regions += `<option value="${data[i].name_ru}, ${data[i].districts[j].name_ru}" />`;
+                                    }
+                                }
+                                $("#birthPlace_list").append(regions);
+                                $("#livesAt_list").html(regions);
+                            },
+                            error: function (data) {
+                                console.log(data);
+                            }
+                        });
+                    })
+                </script>
+
+            </div>
+            <footer>
+                <div class="footer-main">
+                    <div class="copy">
+                        © «NCD CRM v1.0», 2019
+                    </div>
+                    <div class="dev">
+                        Разработка CRM-системы: <a href='#'>Online Service Group</a>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <div class="clearfix"></div>
+        <div id="mainSuccess">Успешно сохранено</div>
+        <div id="mainError">Произошла ошибка</div>
+
+        <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog change-password">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Change password</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="">
+                            <div class="form-group">
+                                <label for="newLogin">Имя пользователя</label>
+                                <input name="new_login" type="text" class="form-control" id="newLogin">
+                            </div>
+                            <div class="form-group">
+                                <label for="newPass">New password</label>
+                                <input name="new_pass" type="password" class="form-control" id="newPass">
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPass">Password confirm</label>
+                                <input name="conf_pass" type="password" class="form-control" id="confirmPass">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="changePassButton" data-url="http://localhost:8000/api/v2/admin/operator/operator-change-username-password/{{ .user.Id }}/" type="button" class="btn btn-default">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        
+        new Vue({
+            methods: {
+                alertOnLoad() {
+                    console.log("Hello, world!")
+                }
+            },
+            mounted () {
+                this.alertOnLoad()
+            }
+        })
+    </script>
+    <script>
+        $(document).ready(function(){
+            $('#changePassButton').click(function (event) {
+                event.preventDefault();
+                let $formData = new FormData();
+                let url = $(this).data("url");
+
+                $formData.append("username", $("#newLogin").val());
+                $formData.append("password", $("#newPass").val());
+                $formData.append("password_confirm", $("#confirmPass").val());
+
+                $.ajax({
+                    url: url,
+                    data: $formData,
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        var x = document.getElementById("mainSuccess");
+                        x.className = "show";
+                        setTimeout(function(){
+                            x.className = x.className.replace("show", "");
+                            location.reload();
+                        }, 1500);
+                    },
+                    error: function (data) {
+                        var x = document.getElementById("mainError");
+
+                        x.className = "show";
+                        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+                    },
+                });
+            });
+        });
+        function refresh() {
+            let now = new Date();
+            if (showTime) {
+                let time = [now.getHours(), now.getMinutes(), now.getSeconds()];
+                time.forEach(function(val, index, arr) {
+                    arr[index] = addZero(val);
+                });
+
+                let time_str = time.join(":");
+                //document.title = time_str;
+                document.getElementById('time').innerHTML = time_str;
+            } else {
+                let date = [addZero(now.getDate()), MONTHS[now.getMonth()], now.getFullYear().toString().slice(2, 4)];
+                let date_str = date.join(" ");
+                //document.title = date_str;
+                document.getElementById('time').innerHTML = date_str;
+            }
+        }
+        refresh();
+        setInterval(refresh, 1000);
+    </script>
+    </body>
+    </html>
+{{ end }}

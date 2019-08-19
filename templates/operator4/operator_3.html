@@ -1,0 +1,311 @@
+{{ define "operator_4_3" }}
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>NCD</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap -->
+        <link href="/static/operator/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/static/operator/bootstrap/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
+        <link href="/static/operator/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+        <link rel="stylesheet" href="/static/operator/js/datepicker/bootstrap-datepicker.css" />
+        <!-- styles -->
+        <link href="/static/operator/css/alerty.css" rel="stylesheet">
+        <link href="/static/operator/css/styles.css" rel="stylesheet">
+        <link href="/static/operator/css/media.css" rel="stylesheet">
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="/static/operator/js/jquery.js"></script>
+        <script src="/static/operator/js/csrf.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="/static/operator/bootstrap/js/bootstrap.min.js"></script>
+        <script src="/static/operator/js/jquery.inputmask.bundle.js"></script>
+        <script src="/static/operator/bootstrap/bootstrap-select/js/bootstrap-select.min.js"></script>
+        <script src="/static/operator/js/datepicker/bootstrap-datepicker.js"></script>
+        <script src="/static/operator/js/alerty.js"></script>
+    </head>
+    <body>
+
+    <section class="page-content">
+        <div class="sidebar">
+            <div class="sidebar-box">
+                <div class="sidebar-header">
+                    <div class="hader-logo">
+                        <img src="/static/operator/images/logo.svg" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="content-box">
+                <div class="content-header">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="content-header__right">
+                                <div class="content-header__time">
+                                    <h2 id="time"></h2>
+                                </div>
+                                <div class="content-header__user">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                        <i class="fa fa-user fa-fw"></i> <span>{{ .user.Username }}</span> <i class="fa fa-caret-down"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user">
+                                        <li>
+                                            <a href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-gear fa-fw"></i>Настройки</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a href="/logout"><i class="fa fa-sign-out fa-fw"></i>Выйти</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+
+                <div class="content-title">
+                    <h2>Зарегистрировать аппликанта</h2>
+                </div>
+                <div class="card-main">
+                    <div class="card-main__header">
+                        <h2>Фильтр</h2>
+                    </div>
+                    <div class="card-main__content">
+                        <form method="GET">
+                            <div class="search-form__app">
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="">Ф.И.О</label>
+                                        <input name="fullname" type="text" class="form-control" id="" value="">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="">Телефон</label>
+                                        <input name="phone" type="text" class="form-control" id="" value="">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="">Пол</label>
+                                        <select class="form-control selectpicker show-tick" name="gender" id="">
+                                            <option value="">Выберите</option>
+                                            <option value="m">Мужской</option>
+                                            <option value="f">Женский</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="search-buttons">
+                                        <div class="form-search__button" id="">
+                                            <button id="" type="submit">Поиск</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </form>
+
+                        <div class="search-results__main">
+                            <div class="table-main">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr class="table-row" data-href="#">
+                                        <th class="td-id">№</th>
+                                        <th class="td-fio">Ф.И.О</th>
+                                        <th class="td-reg">Регистрационный номер</th>
+                                        <th class="td-phone">Телефон</th>
+                                        <th class="td-date">Время</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {{ range $emp := .employees }}
+                                        <tr class="table-row" data-href="/operator-4/{{ $emp.Id }}">
+                                            <td class="td-id">{{ $emp.Id }}</td>
+                                            <td class="td-fio">{{ $emp.FullNameRu }}</td>
+                                            <td class="td-reg">{{ $emp.RegisterNumber }}</td>
+                                            <td class="td-phone">{{ $emp.Phone }}</td>
+                                            <td class="td-date">{{ $emp.CreatedFormat }}</td>
+                                        </tr>
+                                    {{ end }}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+            <footer>
+                <div class="footer-main">
+                    <div class="copy">
+                        © «NCD CRM v1.0», 2019
+                    </div>
+                    <div class="dev">
+                        Разработка CRM-системы: <a href='#'>Online Service Group</a>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <div class="sideRight">
+            <div class="help-block">
+                <div class="help-block__icon">
+                    <a href="#">
+                        <i class="fa fa-book" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="bx-informer">
+                <div class="bx-im-informer-icon">
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle waves-effect waves-dark" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bell" aria-hidden="true"></i></a>
+                        <div class="dropdown-menu dropdown-menu-right animated flipInY">
+                            <ul class="dropdown-not">
+                                <li>
+                                    <a href="#">Список аппликантов</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="operator2Notification">
+                        <span id="notification-counter">0</span>
+                    </div>
+                </div>
+            </div>
+            <div class="bx-informer">
+                <div class="bx-im-informer-icon" style="background: #05b5ab;">
+                    <a href="#" title="Список аппликантов">
+                        <i class="fa fa-list-alt" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="bx-search">
+                <div class="bx-im-search-icon">
+                    <a href="#">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+        <div id="mainSuccess">Успешно сохранено</div>
+        <div id="mainError">Произошла ошибка</div>
+
+        <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog change-password">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Change password</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="">
+                            <div class="form-group">
+                                <label for="newLogin">Имя пользователя</label>
+                                <input name="new_login" type="text" class="form-control" id="newLogin">
+                            </div>
+                            <div class="form-group">
+                                <label for="newPass">New password</label>
+                                <input name="new_pass" type="password" class="form-control" id="newPass">
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPass">Password confirm</label>
+                                <input name="conf_pass" type="password" class="form-control" id="confirmPass">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="changePassButton" data-url="wtf" type="button" class="btn btn-default">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    </body>
+    </html>
+    <script>
+        const MONTHS = {
+        0: 'Jan',
+        1: 'Feb',
+        2: 'Mar',
+        3: 'Apr',
+        4: 'May',
+        5: 'Jun',
+        6: 'Jul',
+        7: 'Aug',
+        8: 'Sep',
+        9: 'Oct',
+        10: 'Nov',
+        11: 'Dec'
+    };
+    let showTime = true;
+
+    function addZero(val) {
+        return val < 10 ? '0' + val : val;
+    }
+
+    function refresh() {
+        let now = new Date();
+        if (showTime) {
+            let time = [now.getHours(), now.getMinutes(), now.getSeconds()];
+            time.forEach(function(val, index, arr) {
+                arr[index] = addZero(val);
+            });
+
+            let time_str = time.join(":");
+            //document.title = time_str;
+            document.getElementById('time').innerHTML = time_str;
+        } else {
+            let date = [addZero(now.getDate()), MONTHS[now.getMonth()], now.getFullYear().toString().slice(2, 4)];
+            let date_str = date.join(" ");
+            //document.title = date_str;
+            document.getElementById('time').innerHTML = date_str;
+        }
+    }
+
+    refresh();
+    setInterval(refresh, 1000);
+
+    document.getElementById('time').addEventListener('click', function() {
+        showTime = !showTime;
+        refresh();
+    });
+
+
+    Date.prototype.toShortFormat = function() {
+
+        var month_names =["01","02","03",
+            "04","05","06",
+            "07","08","09",
+            "10","11","12"];
+
+        var day = this.getDate();
+        var month_index = this.getMonth();
+        var year = this.getFullYear();
+
+        if (day < 10) {
+            day = "0" + day;
+        }
+
+        return year + "-" + month_names[month_index] + "-" + day
+        // return "" + day + "-" + month_names[month_index] + "-" + year;
+    };
+        $(function(){
+            $('.selectpicker').selectpicker();
+
+            $(".table-row").click(function() {
+                window.document.location = $(this).data("href");
+            });
+        });
+    </script>
+{{ end }}

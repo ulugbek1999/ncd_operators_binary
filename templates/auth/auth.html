@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NCD Login page</title>
+    <link rel="stylesheet" href="/static/login/login-page/style.css">
+
+
+    <!-- icons -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="/static/login/preloader/preloader.css">
+</head>
+<body>
+<div class="block-login-site">
+    <aside class="aside-login__main">
+        <section class="block block-1 d-flex">
+        </section>
+        <section class="block block-2 d-flex">
+            <div class="preloader-container">
+                <div class="cssload-loader">
+                    <div class="cssload-inner cssload-one"></div>
+                    <div class="cssload-inner cssload-two"></div>
+                    <div class="cssload-inner cssload-three"></div>
+                </div>
+            </div>
+            <div class="login-page__container">
+                <div class="login-page__logo"><img src="/static/operator/images/logo_login.svg" alt="">
+                </div>
+                <div class="login-page__form-container">
+                    <form method="POST" action="/login" class="login-page__form">
+                        <input type="hidden" value="" id="login_loginer" name="loginer">
+                        <div class="login-page__form-inp">
+                            <label for="login">Имя пользователя</label>
+                            <input type="text" name="username" id="login" class="validate">
+                            <img src="/static/login/login-page/icons/login-i.png">
+                        </div>
+                        <div class="login-page__form-inp">
+                            <label for="password">Пароль</label>
+                            <input type="password" name="password" id="password" class="validate">
+                            <img src="/static/login/login-page/icons/password-i.png">
+                        </div>
+                        {{ if .error }}
+                        <div class="login-page__form-error">
+                            <span id="err">
+                                Логин или пароль неверны
+                            </span>
+                        </div>
+                        {{ end }}
+                        <div class="login-page__form-enterBtn">
+                            <button type="submit" id="enterBtn">Войти</button>
+                        </div>
+                    </form>
+                    <div class="login-page__form-link-forgot-password">
+                        <a href="">Забыли пароль</a>
+                    </div>
+                    <div class="login-page__form-footer">
+                        <span>© 2019 National Center of Development</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="block block-3 d-flex">
+            <div class="img-page__container">
+            </div>
+        </section>
+    </aside>
+</div>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/static/operator/js/jquery.js"></script>
+</body>
+</html>

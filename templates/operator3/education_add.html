@@ -1,0 +1,397 @@
+{{ define "operator_3_education" }}
+	
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NCD</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="/static/operator/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/operator/bootstrap/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
+    <link href="/static/operator/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/static/operator/js/datepicker/bootstrap-datepicker.css" />
+    <link rel="stylesheet" href="/static/operator/fancybox/jquery.fancybox.min.css">
+    <link href="/static/plugins/filepond/filepond-plugin-image-preview.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/plugins/filepond/filepond.min.css">
+    <!-- styles -->
+    <link href="/static/operator/css/alerty.css" rel="stylesheet">
+    <link href="/static/operator/css/styles.css" rel="stylesheet">
+    <link href="/static/operator/css/media.css" rel="stylesheet">
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="/static/operator/js/jquery.js"></script>
+    <script src="/static/operator/js/csrf.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/static/operator/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/operator/js/jquery.inputmask.bundle.js"></script>
+    <script src="/static/operator/bootstrap/bootstrap-select/js/bootstrap-select.min.js"></script>
+    <script src="/static/operator/js/datepicker/bootstrap-datepicker.js"></script>
+    <script src="/static/operator/js/alerty.js"></script>
+</head>
+<body>
+
+<section class="page-content">
+    <div class="sidebar">
+        <div class="sidebar-box">
+            <div class="sidebar-header">
+                <div class="hader-logo">
+                    <img src="/static/operator/images/logo.svg" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="content-box">
+            <div class="content-header">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="content-header__right">
+                            <div class="content-header__time">
+                                <h2 id="time"></h2>
+                            </div>
+                            <div class="content-header__user">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <i class="fa fa-user fa-fw"></i> <span>{{ .user.Username }}</span> <i class="fa fa-caret-down"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-user">
+                                    <li>
+                                        <a href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-gear fa-fw"></i> Настройки</a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="/logout"><i class="fa fa-sign-out fa-fw"></i> Выйти</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+	<div class="content-title">
+        <h2>Зарегистрировать аппликанта</h2>
+        <span>№: {{ .employee.RegisterNumber }}</span>
+    </div>
+    <div class="card-main">
+        <div class="card-main__header">
+            <h2>Личная карточка аппликанта</h2>
+        </div>
+        <div class="card-main__content"> 
+            <div class="employee-add3__main">
+                <form style="padding: 0 15px;">
+                    <input type="hidden" value="" id="employee-id">
+                    <div class="education-item">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="eduType">Тип/вид учебного заведения</label>
+                                    <select class="form-control selectpicker show-tick" name="edu_type" id="eduType">
+                                        <option value="">Выберите</option>
+                                        {{ range $edu := .educationType }}
+                                            <option value="{{ $edu.Id }}">{{ $edu.NameRu }}</option>
+                                        {{ end }}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="eduName">Учебное заведение</label>
+                                    <input name="edu_name" type="text" class="form-control" id="eduName" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label for="eduAddress">Адрес учебного заведения</label>
+                                    <input name="edu_address" list="eduRegion_list" type="text" class="form-control" id="eduAddress" value="" autocomplete="off">
+                                    <datalist class="region-list" id="eduRegion_list">
+                                    </datalist>
+                                </div>
+                                <div class="form-group">
+                                    <label for="eduSpec">Специальность</label>
+                                    <input name="edu_spec" type="text" class="form-control" id="eduSpec" value="">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="eduStartDate">Дата начала обучения</label>
+                                    <input name="edu_start_date" type="text" class="datepickerFrom form-control" data-date-format="dd.mm.yyyy" id="eduStartDate" value="" autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <label for="eduGradDate">Дата окончания обучения</label>
+                                    <input name="edu_grad_date" type="text" class="datepickerFrom form-control" data-date-format="dd.mm.yyyy" id="eduGradDate1" value="" autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <label for="eduAddit">Прочие данные об учебе</label>
+                                    <input name="edu_addit" type="text" class="form-control" id="eduAddit" value="">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="education-file__upload op3-file__upload form-group">
+                                    <label for="">Файлы <i>(не обязательно)</i></label>
+                                    <input type="file"
+                                           class="filepondEducation"
+                                           name="filepond_education"
+                                           label-idle="Загрузить файлы"
+                                           multiple
+                                           data-max-file-size="3MB"
+                                           data-max-files="4"
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="transition-buttons" style="text-align: center;">
+                        <button id="employeeCreateButton" class="send3Button" data-api="/api/operator-3/{{ .employee.Id }}/add/education" data-redirect-url="/operator-3/{{ .employee.Id }}">
+                            Отправить
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+        </div>
+        <footer>
+            <div class="footer-main">
+                <div class="copy">
+                    © «NCD CRM v1.0», 2019
+                </div>
+                <div class="dev">
+                    Разработка CRM-системы: <a href='#'>Online Service Group</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+<div class="sideRight">
+        <div class="help-block">
+            <div class="help-block__icon">
+                <a href="#">
+                    <i class="fa fa-book" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+        <div class="bx-informer">
+            <div class="bx-im-informer-icon">
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle waves-effect waves-dark" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bell" aria-hidden="true"></i></a>
+                    <div class="dropdown-menu dropdown-menu-right animated flipInY">
+                        <ul class="dropdown-not">
+                            <li>
+                                <a href="#">Список аппликантов</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="operator2Notification">
+                    <span id="notification-counter">0</span>
+                </div>
+            </div>
+        </div>
+        <div class="bx-informer">
+            <div class="bx-im-informer-icon" style="background: #05b5ab;">
+                <a href="#" title="Список аппликантов">
+                    <i class="fa fa-list-alt" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+        <div class="bx-search">
+            <div class="bx-im-search-icon">
+                <a href="#">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div id="mainSuccess">Успешно сохранено</div>
+    <div id="mainError">Произошла ошибка</div>
+
+
+</section>
+
+<script src="/static/plugins/filepond/filepond-plugin-file-encode.min.js"></script>
+<script src="/static/plugins/filepond/filepond-plugin-file-validate-size.min.js"></script>
+<script src="/static/plugins/filepond/filepond-plugin-image-exif-orientation.min.js"></script>
+<script src="/static/plugins/filepond/filepond-plugin-image-preview.min.js"></script>
+<script src="/static/plugins/filepond/filepond.min.js"></script>
+<script>
+    const MONTHS = {
+        0: 'Jan',
+        1: 'Feb',
+        2: 'Mar',
+        3: 'Apr',
+        4: 'May',
+        5: 'Jun',
+        6: 'Jul',
+        7: 'Aug',
+        8: 'Sep',
+        9: 'Oct',
+        10: 'Nov',
+        11: 'Dec'
+    };
+    let showTime = true;
+
+    function addZero(val) {
+        return val < 10 ? '0' + val : val;
+    }
+
+    function refresh() {
+        let now = new Date();
+        if (showTime) {
+            let time = [now.getHours(), now.getMinutes(), now.getSeconds()];
+            time.forEach(function(val, index, arr) {
+                arr[index] = addZero(val);
+            });
+
+            let time_str = time.join(":");
+            //document.title = time_str;
+            document.getElementById('time').innerHTML = time_str;
+        } else {
+            let date = [addZero(now.getDay()), MONTHS[now.getMonth()], now.getFullYear().toString().slice(2, 4)];
+            let date_str = date.join(" ");
+            //document.title = date_str;
+            document.getElementById('time').innerHTML = date_str;
+        }
+    }
+
+    refresh();
+    setInterval(refresh, 1000);
+
+    document.getElementById('time').addEventListener('click', function() {
+        showTime = !showTime;
+        refresh();
+    });
+
+
+    Date.prototype.toShortFormat = function() {
+
+        var month_names =["01","02","03",
+            "04","05","06",
+            "07","08","09",
+            "10","11","12"];
+
+        var day = this.getDate();
+        var month_index = this.getMonth();
+        var year = this.getFullYear();
+
+        if (day < 10) {
+            day = "0" + day;
+        }
+
+        return year + "-" + month_names[month_index] + "-" + day
+        // return "" + day + "-" + month_names[month_index] + "-" + year;
+    };
+    function dateMyFormat(date) {
+        var elem = date.split('.');
+        var newMyDate = elem[2] + '-' + elem[1] + '-' + elem[0];
+        //console.log(newMyDate);
+        if(date){
+            return newMyDate;
+        }else{
+            return '';
+        }
+    }
+    $(function () {
+        $.fn.datepicker.dates['ru'] = {
+            days: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"],
+            daysShort: ["Вск", "Пнд", "Втр", "Срд", "Чтв", "Птн", "Суб"],
+            daysMin: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+            months: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+            monthsShort: ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
+            today: "Сегодня",
+            clear: "Очистить",
+            format: "dd.mm.yyyy",
+            weekStart: 1,
+            monthsTitle: 'Месяцы'
+        };
+    }(jQuery));
+    (function($){
+        $.fn.datepicker.dates['uz-latn'] = {
+            days: ["Yakshanba", "Dushanba", "Seshanba", "Chorshanba", "Payshanba", "Juma", "Shanba"],
+            daysShort: ["Yak", "Du", "Se", "Chor", "Pay", "Ju", "Sha"],
+            daysMin: ["Ya", "Du", "Se", "Cho", "Pa", "Ju", "Sha"],
+            months: ["Yanvar", "Fevral", "Mart", "Aprel", "May", "Iyun", "Iyul", "Avgust", "Sentabr", "Oktabr", "Noyabr", "Dekabr"],
+            monthsShort: ["Yan", "Fev", "Mar", "Apr", "May", "Iyn", "Iyl", "Avg", "Sen", "Okt", "Noy", "Dek"],
+            today: "Bugun",
+            clear: "O'chirish",
+            format: "dd.mm.yyyy",
+            weekStart: 1,
+            monthsTitle: 'Oylar'
+        };
+    }(jQuery));
+    $(function () {
+        $(".datepickerFrom").datepicker({
+            autoclose: true,
+            language: 'ru',
+            todayHighlight: true
+        });
+    });
+
+    FilePond.registerPlugin(
+
+        // encodes the file as base64 data
+        FilePondPluginFileEncode,
+
+        // validates the size of the file
+        FilePondPluginFileValidateSize,
+
+        // corrects mobile image orientation
+        FilePondPluginImageExifOrientation,
+
+        // previews dropped images
+        FilePondPluginImagePreview
+    );
+    FilePond.setOptions({
+        instantUpload: false
+    });
+
+    fEdu = FilePond.create(document.querySelector(`input.filepondEducation`));
+
+    $("#employeeCreateButton").click(function(event){
+        event.preventDefault();
+
+        let educationFormData = new FormData();
+
+        educationFormData.append(`employee`, $('#employee-id').val());
+        educationFormData.append(`type`, $(`select[name='edu_type']`).val());
+        educationFormData.append(`name_ru`, $(`input[name='edu_name']`).val());
+        educationFormData.append(`address_ru`, $(`input[name='edu_address']`).val());
+        educationFormData.append(`specialization_ru`, $(`input[name='edu_spec']`).val());
+        educationFormData.append(`date_started`, dateMyFormat($(`input[name='edu_start_date']`).val()));
+        educationFormData.append(`date_finished`, dateMyFormat($(`input[name='edu_grad_date']`).val()));
+        educationFormData.append(`additional_ru`, $(`input[name='edu_addit']`).val());
+
+        var educationCountFile = fEdu.getFiles().length;
+        for (var j = 0; j < educationCountFile; j++) {
+            let f = fEdu.getFiles()[j].file;
+            let fImage = new File([f], f.name, {type: f.type});
+            educationFormData.append(`file`, fImage);
+        }
+        redirectUrl = $(this).data("redirect-url");
+        $.ajax({
+            url: $(this).data('api'),
+            data: educationFormData,
+            processData: false,
+            contentType: false,
+            type: "POST",
+            success: function (data) {
+                    var x = document.getElementById("mainSuccess");
+                    x.className = "show";
+                    setTimeout(function(){
+                        x.className = x.className.replace("show", "");
+                        window.location.href = redirectUrl;
+                    }, 1500);
+                },
+                error: function (data) {
+                    var x = document.getElementById("mainError");
+
+                    x.className = "show";
+                    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+                }
+        });
+    });
+</script>
+<script src="/static/operator/fancybox/jquery.fancybox.min.js"></script>
+
+</body>
+</html>
+{{ end }}

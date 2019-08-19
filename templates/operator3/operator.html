@@ -1,0 +1,578 @@
+{{ define "operator_3" }}
+	
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NCD</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="/static/operator/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/operator/bootstrap/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
+    <link href="/static/operator/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/static/operator/js/datepicker/bootstrap-datepicker.css" />
+    <link rel="stylesheet" href="/static/operator/fancybox/jquery.fancybox.min.css">
+    <!-- styles -->
+    <link href="/static/operator/css/alerty.css" rel="stylesheet">
+    <link href="/static/operator/css/styles.css" rel="stylesheet">
+    <link href="/static/operator/css/media.css" rel="stylesheet">
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="/static/operator/js/jquery.js"></script>
+    <script src="/static/operator/js/csrf.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/static/operator/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/operator/js/jquery.inputmask.bundle.js"></script>
+    <script src="/static/operator/bootstrap/bootstrap-select/js/bootstrap-select.min.js"></script>
+    <script src="/static/operator/js/datepicker/bootstrap-datepicker.js"></script>
+    <script src="/static/operator/js/alerty.js"></script>
+</head>
+<body>
+
+<section class="page-content">
+    <div class="sidebar">
+        <div class="sidebar-box">
+            <div class="sidebar-header">
+                <div class="hader-logo">
+                    <img src="/static/operator/images/logo.svg" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="content-box">
+            <div class="content-header">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="content-header__right">
+                            <div class="content-header__time">
+                                <h2 id="time"></h2>
+                            </div>
+                            <div class="content-header__user">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <i class="fa fa-user fa-fw"></i> <span>{{ .user.Username }}</span> <i class="fa fa-caret-down"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-user">
+                                    <li>
+                                        <a href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-gear fa-fw"></i> Настройки</a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a href="/logout"><i class="fa fa-sign-out fa-fw"></i> Выйти</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+	<div class="content-title">
+        <h2>Зарегистрировать аппликанта</h2>
+        <span>№: {{ .employee.RegisterNumber }}</span>
+    </div>
+    <div class="card-main">
+        <div class="card-main__header">
+            <h2>Личная карточка аппликанта</h2>
+        </div>
+        <div class="card-main__content"> 
+            <div class="employee-tabs">
+                <div class="panel-group d-accordion">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" data-toggle="collapse" data-parent=".d-accordion" href="#educations-view">
+                            <h4 class="panel-title">Образование <i class="fa fa-chevron-up pull-right"></i></h4>
+                        </div>
+                        <div id="educations-view" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <a href="/operator-3/{{ .employee.Id }}/add/education" class="addButtonProfile">Добавить</a>
+                                {{ range $edu := .educations }}
+                                    <div class="op3View-item">
+                                        <ul>
+                                            <li>
+                                                <strong>Тип/вид учебного заведения:</strong>
+                                                <span>{{ $edu.EducationType.NameRu }}</span>
+                                            </li>
+                                            <li>
+                                                <strong>Учебное заведение:</strong>
+                                                <span>{{ $edu.NameRu }}</span>
+                                            </li>
+                                            <li>
+                                                <strong>Адрес учебного заведения:</strong>
+                                                <span>{{ $edu.AddressRu }}</span>
+                                            </li>
+                                            <li>
+                                                <strong>Специальность:</strong>
+                                                <span>{{ $edu.SpecializationRu }}</span>
+                                            </li>
+                                            <li>
+                                                <strong>Дата начала обучения:</strong>
+                                                <span>{{ $edu.DateStartedFormat }}</span>
+                                            </li>
+                                            <li>
+                                                <strong>Дата окончания обучения:</strong>
+                                                <span>{{ $edu.DateFinishedFormat }}</span>
+                                            </li>
+                                            <li>
+                                                <strong>Прочие данные об учебе:</strong>
+                                                <span>{{ $edu.AdditionalRu }}</span>
+                                            </li>
+                                            <li class="files-view">
+                                                <ul class="files-view__main">
+                                                    {{ range $file := $edu.Files }}
+                                                        <li>
+                                                            <a data-fancybox href="{{ $.mediaUrl }}{{ $file.File }}"><i class="fa fa-file" aria-hidden="true"></i>{{ $file.File }}</a>
+{{/*                                                            <span>file size</span>*/}}
+                                                        </li>
+                                                    {{ end }}
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                        <a href="/operator-3/{{ $edu.Id }}/{{ $.employee.Id }}/edit/education" class="editButtonProfile">Изменить</a>
+                                    </div>
+                                {{ end }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" data-toggle="collapse" data-parent=".d-accordion" href="#language-view">
+                            <h4 class="panel-title">Знание языков<i class="fa fa-chevron-up pull-right"></i></h4>
+                        </div>
+                        <div id="language-view" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <a href="/operator-3/{{ .employee.Id }}/add/language" class="addButtonProfile">Добавить</a>
+                                {{ range $lang := .languages }}
+                                    <div class="op3View-item">
+                                        <ul>
+                                            <li>
+                                                <strong>Название языка:</strong>
+                                                <span>{{ $lang.NameRu }}</span>
+                                            </li>
+                                            <li>
+                                                <strong>Уровень знания:</strong>
+                                                <span>{{ $lang.LevelDisplay }}</span>
+                                            </li>
+                                            <li class="files-view">
+                                                <ul class="files-view__main">
+                                                    {{ range $file := $lang.Files }}
+                                                        <li>
+                                                            <a data-fancybox href="{{ $.mediaUrl }}{{ $file.File }}"><i class="fa fa-file" aria-hidden="true"></i>{{ $file.File }}</a>
+                                                            {{/*                                                            <span>file size</span>*/}}
+                                                        </li>
+                                                    {{ end }}
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                        <a href="/operator-3/{{ $lang.Id }}/{{ $.employee.Id }}/edit/language" class="editButtonProfile">Изменить</a>
+                                    </div>
+                                {{ end }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" data-toggle="collapse" data-parent=".d-accordion" href="#militaryView">
+                            <h4 class="panel-title">Служба в армии<i class="fa fa-chevron-up pull-right"></i></h4>
+                        </div>
+                        <div id="militaryView" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <a href="/operator-3/{{ .employee.Id }}/add/army" class="addButtonProfile">Добавить</a>
+                                {{ range $army := .army }}
+                                    <div class="op3View-item">
+                                        <ul>
+                                            <li>
+                                                <strong>Наименование воинской части:</strong>
+                                                <span>{{ $army.NameRu }}</span>
+                                            </li>
+                                            <li>
+                                                <strong>Дата начала службы:</strong>
+                                                <span>{{ $army.DateStartedFormat }}</span>
+                                            </li>
+                                            <li>
+                                                <strong>Регион:</strong>
+                                                <span>{{ $army.RegionRu }}</span>
+                                            </li>
+                                            <li>
+                                                <strong>Дата окончания службы:</strong>
+                                                <span>{{ $army.DateFinishedFormat }}</span>
+                                            </li>
+                                            <li>
+                                                <strong>Специальность:</strong>
+                                                <span>{{ $army.SpecializationRu }}</span>
+                                            </li>
+                                            <li>
+                                                <strong>Звание:</strong>
+                                                <span>{{ $army.RankRu }}</span>
+                                            </li>
+                                            <li class="files-view">
+                                                <ul class="files-view__main">
+                                                    {{ range $file := $army.Files }}
+                                                        <li>
+                                                            <a data-fancybox href="{{ $.mediaUrl }}{{ $file.File }}"><i class="fa fa-file" aria-hidden="true"></i>{{ $file.File }}</a>
+                                                            {{/*                                                            <span>file size</span>*/}}
+                                                        </li>
+                                                    {{ end }}
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                        <a href="/operator-3/{{ $army.Id }}/{{ $.employee.Id }}/edit/army" class="editButtonProfile">Изменить</a>
+                                    </div>
+                                {{ end }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" data-toggle="collapse" data-parent=".d-accordion" href="#receivedView">
+                            <h4 class="panel-title">Полученные награды<i class="fa fa-chevron-up pull-right"></i></h4>
+                        </div>
+                        <div id="receivedView" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <a href="/operator-3/{{ .employee.Id }}/add/reward" class="addButtonProfile">Добавить</a>
+                                {{ range $reward := .rewards }}
+                                    <div class="op3View-item">
+                                        <ul>
+                                            <li>
+                                                <strong>Название:</strong>
+                                                <span>{{ $reward.NameRu }}</span>
+                                            </li>
+                                            <li>
+                                                <strong>Комментарий:</strong>
+                                                <span>{{ $reward.DescriptionRu }}</span>
+                                            </li>
+                                            <li class="files-view">
+                                                <ul class="files-view__main">
+                                                    {{ range $file := $reward.Files }}
+                                                        <li>
+                                                            <a data-fancybox href="{{ $.mediaUrl }}{{ $file.File }}"><i class="fa fa-file" aria-hidden="true"></i>{{ $file.File }}</a>
+                                                            {{/*                                                            <span>file size</span>*/}}
+                                                        </li>
+                                                    {{ end }}
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                        <a href="/operator-3/{{ $reward.Id }}/{{ $.employee.Id }}/edit/reward" class="editButtonProfile">Изменить</a>
+                                    </div>
+                                {{ end }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" data-toggle="collapse" data-parent=".d-accordion" href="#familyView">
+                            <h4 class="panel-title">Семейный статус<i class="fa fa-chevron-up pull-right"></i></h4>
+                        </div>
+                        <div id="familyView" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                {{ if .family }}
+                                {{ else }}
+                                    <a href="/operator-3/{{ .employee.Id }}/add/family" class="addButtonProfile">Добавить</a>
+                                {{ end }}
+                                {{ range $fam := .family }}
+                                    <div class="op3View-item">
+                                        <ul>
+                                            <li>
+                                                <strong>Семейный статус:</strong>
+                                                <span>{{ $fam.StatusDisplay }}</span>
+                                            </li>
+                                            <li>
+                                                <strong>Количество детей:</strong>
+                                                <span>{{ $fam.ChildrenAmount }}</span>
+                                            </li>
+                                            <li class="files-view">
+                                                <ul class="files-view__main">
+                                                    {{ range $file := $fam.Files }}
+                                                        <li>
+                                                            <a data-fancybox href="{{ $.mediaUrl }}{{ $file.File }}"><i class="fa fa-file" aria-hidden="true"></i>{{ $file.File }}</a>
+                                                            {{/*                                                            <span>file size</span>*/}}
+                                                        </li>
+                                                    {{ end }}
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                        <a href="/operator-3/{{ $fam.Id }}/{{ $.employee.Id }}/edit/family" class="editButtonProfile">Изменить</a>
+                                    </div>
+                                {{ end }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" data-toggle="collapse" data-parent=".d-accordion" href="#experienceView">
+                            <h4 class="panel-title">Трудовой опыт<i class="fa fa-chevron-up pull-right"></i></h4>
+                        </div>
+                        <div id="experienceView" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <a href="/operator-3/{{ .employee.Id }}/add/experience" class="addButtonProfile">Добавить</a>
+                                {{ range $exp := .experiences }}
+                                    <div class="op3View-item">
+                                        <ul>
+                                            <li>
+                                                <strong>Организация:</strong>
+                                                <span>{{ $exp.OrganizationRu }}</span>
+                                            </li>
+                                            <li>
+                                                <strong>Дата начала работы:</strong>
+                                                <span>{{ $exp.DateStartedFormat }}</span>
+                                            </li>
+                                            <li>
+                                                <strong>Дата окончания работы:</strong>
+                                                <span>{{ $exp.DateFinishedFormat }}</span>
+                                            </li>
+                                            <li>
+                                                <strong>Должность:</strong>
+                                                <span>{{ $exp.PositionRu }}</span>
+                                            </li>
+                                            <li>
+                                                <strong>Подразделение:</strong>
+                                                <span>{{ $exp.SubDivisionRu }}</span>
+                                            </li>
+                                            <li>
+                                                <strong>Место нахождения/адрес:</strong>
+                                                <span>{{ $exp.AddressRu }}</span>
+                                            </li>
+                                            <li class="files-view">
+                                                <ul class="files-view__main">
+                                                    {{ range $file := $exp.Files }}
+                                                        <li>
+                                                            <a data-fancybox href="{{ $.mediaUrl }}{{ $file.File }}"><i class="fa fa-file" aria-hidden="true"></i>{{ $file.File }}</a>
+                                                            {{/*                                                            <span>file size</span>*/}}
+                                                        </li>
+                                                    {{ end }}
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                        <a href="/operator-3/{{ $exp.Id }}/{{ $.employee.Id }}/edit/experience" class="editButtonProfile">Изменить</a>
+                                    </div>
+                                {{ end }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="transition-buttons">
+                    <a href="#" class="transitionButton">Отправить на 4-оператор</a>
+                </div>
+            </div>
+            
+            <div class="clearfix"></div>
+        </div>
+    </div>
+        </div>
+        <footer>
+            <div class="footer-main">
+                <div class="copy">
+                    © «NCD CRM v1.0», 2019
+                </div>
+                <div class="dev">
+                    Разработка CRM-системы: <a href='#'>Online Service Group</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+<div class="sideRight">
+        <div class="help-block">
+            <div class="help-block__icon">
+                <a href="#">
+                    <i class="fa fa-book" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+        <div class="bx-informer">
+            <div class="bx-im-informer-icon">
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle waves-effect waves-dark" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bell" aria-hidden="true"></i></a>
+                    <div class="dropdown-menu dropdown-menu-right animated flipInY">
+                        <ul class="dropdown-not">
+                            <li>
+                                <a href="#">Список аппликантов</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="operator2Notification">
+                    <span id="notification-counter">0</span>
+                </div>
+            </div>
+        </div>
+        <div class="bx-informer">
+            <div class="bx-im-informer-icon" style="background: #05b5ab;">
+                <a href="#" title="Список аппликантов">
+                    <i class="fa fa-list-alt" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+        <div class="bx-search">
+            <div class="bx-im-search-icon">
+                <a href="#">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div id="mainSuccess">Успешно сохранено</div>
+    <div id="mainError">Произошла ошибка</div>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog change-password">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Change password</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="">
+                        <div class="form-group">
+                            <label for="newLogin">Имя пользователя</label>
+                            <input name="new_login" type="text" class="form-control" id="newLogin">
+                        </div>
+                        <div class="form-group">
+                            <label for="newPass">New password</label>
+                            <input name="new_pass" type="password" class="form-control" id="newPass">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPass">Password confirm</label>
+                            <input name="conf_pass" type="password" class="form-control" id="confirmPass">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="changePassButton" data-url="wtf" type="button" class="btn btn-default">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+
+const MONTHS = {
+        0: 'Jan',
+        1: 'Feb',
+        2: 'Mar',
+        3: 'Apr',
+        4: 'May',
+        5: 'Jun',
+        6: 'Jul',
+        7: 'Aug',
+        8: 'Sep',
+        9: 'Oct',
+        10: 'Nov',
+        11: 'Dec'
+    };
+    let showTime = true;
+
+    function addZero(val) {
+        return val < 10 ? '0' + val : val;
+    }
+
+    function refresh() {
+        let now = new Date();
+        if (showTime) {
+            let time = [now.getHours(), now.getMinutes(), now.getSeconds()];
+            time.forEach(function(val, index, arr) {
+                arr[index] = addZero(val);
+            });
+
+            let time_str = time.join(":");
+            //document.title = time_str;
+            document.getElementById('time').innerHTML = time_str;
+        } else {
+            let date = [addZero(now.getDate()), MONTHS[now.getMonth()], now.getFullYear().toString().slice(2, 4)];
+            let date_str = date.join(" ");
+            //document.title = date_str;
+            document.getElementById('time').innerHTML = date_str;
+        }
+    }
+
+    refresh();
+    setInterval(refresh, 1000);
+
+    document.getElementById('time').addEventListener('click', function() {
+        showTime = !showTime;
+        refresh();
+    });
+
+
+Date.prototype.toShortFormat = function() {
+
+    var month_names =["01","02","03",
+        "04","05","06",
+        "07","08","09",
+        "10","11","12"];
+
+    var day = this.getDate();
+    var month_index = this.getMonth();
+    var year = this.getFullYear();
+
+    if (day < 10) {
+        day = "0" + day;
+    }
+
+    return year + "-" + month_names[month_index] + "-" + day
+    // return "" + day + "-" + month_names[month_index] + "-" + year;
+};
+
+$(function () {
+    $(".transitionButton").click(function (e) {
+        e.preventDefault();
+        $.get("/api/operator-3/{{ .employee.Id }}/close", function (data) {
+
+        })
+            .done(function () {
+                var x = document.getElementById("mainSuccess");
+                x.className = "show";
+                setTimeout(function(){
+                    x.className = x.className.replace("show", "");
+                    window.location.href = "/operator-3-2";
+                }, 1500);
+            })
+            .fail(function () {
+                var x = document.getElementById("mainError");
+
+                x.className = "show";
+                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+            })
+    });
+});
+
+$(document).ready(function(){
+    $('#changePassButton').click(function (event) {
+        event.preventDefault();
+        let $formData = new FormData();
+        let url = $(this).data("url");
+
+        $formData.append("username", $("#newLogin").val());
+        $formData.append("password", $("#newPass").val());
+        $formData.append("password_confirm", $("#confirmPass").val());
+
+        $.ajax({
+            url: "#",
+            data: $formData,
+            type: "POST",
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                var x = document.getElementById("mainSuccess");
+                x.className = "show";
+                setTimeout(function(){
+                    x.className = x.className.replace("show", "");
+                    location.reload();
+                }, 1500);
+            },
+            error: function (data) {
+                var x = document.getElementById("mainError");
+
+                x.className = "show";
+                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+            },
+        });
+    });
+});
+</script>
+<script src="/static/operator/fancybox/jquery.fancybox.min.js"></script>
+
+</body>
+</html>
+{{ end }}

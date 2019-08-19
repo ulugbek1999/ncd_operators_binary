@@ -1,0 +1,399 @@
+{{ define "operator_4" }}
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>NCD</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap -->
+        <link href="/static/operator/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/static/operator/bootstrap/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet">
+        <link href="/static/operator/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+        <link rel="stylesheet" href="/static/operator/js/datepicker/bootstrap-datepicker.css" />
+        <link rel="stylesheet" href="/static/operator/chosen_v1.8.7/chosen.min.css">
+        <!-- styles -->
+        <link href="/static/operator/css/alerty.css" rel="stylesheet">
+        <link href="/static/operator/css/styles.css" rel="stylesheet">
+        <link href="/static/operator/css/media.css" rel="stylesheet">
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="/static/operator/js/jquery.js"></script>
+        <script src="/static/operator/js/csrf.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="/static/operator/bootstrap/js/bootstrap.min.js"></script>
+        <script src="/static/operator/js/jquery.inputmask.bundle.js"></script>
+        <script src="/static/operator/bootstrap/bootstrap-select/js/bootstrap-select.min.js"></script>
+        <script src="/static/operator/js/datepicker/bootstrap-datepicker.js"></script>
+        <script src="/static/operator/js/alerty.js"></script>
+    </head>
+    <body>
+
+    <section class="page-content">
+        <div class="sidebar">
+            <div class="sidebar-box">
+                <div class="sidebar-header">
+                    <div class="hader-logo">
+                        <img src="/static/operator/images/logo.svg" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="content-box">
+                <div class="content-header">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="content-header__right">
+                                <div class="content-header__time">
+                                    <h2 id="time"></h2>
+                                </div>
+                                <div class="content-header__user">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                        <i class="fa fa-user fa-fw"></i> <span>{{ .user.Username }}</span> <i class="fa fa-caret-down"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user">
+                                        <li>
+                                            <a href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-gear fa-fw"></i> Настройки</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a href="/logout"><i class="fa fa-sign-out fa-fw"></i> Выйти</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+
+                <div class="content-title">
+                    <h2>Зарегистрировать аппликанта</h2>
+                    <span>№: {{ .employee.RegisterNumber }}</span>
+                </div>
+                <div class="card-main">
+                    <div class="card-main__header">
+                        <h2>Личная карточка аппликанта</h2>
+                        <a href="/operator-3/{{ .employee.Id }}">Показать 3-стол</a>
+                    </div>
+                    <div class="card-main__content">
+                        <form id="formOperator4">
+                            <div class="col-md-3">
+                                <div class="operator4-col">
+                                    <div class="form-title">
+                                        <h2>Страны</h2>
+                                    </div>
+                                    <div class="operator4-item">
+                                        <div class="form-group">
+                                            <div id="outputChoose"></div>
+                                            <select data-placeholder="Выберите страны..." name="des_countries" multiple class="chosen-select">
+                                                {{ range $c := .countries }}
+                                                    <option value="{{ $c.Id }}">{{ $c.NameRu }}</option>
+                                                {{ end }}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="operator4-col">
+                                    <div class="form-title">
+                                        <h2>Готовность поступать в ВУЗ</h2>
+                                    </div>
+                                    <div class="operator4-item">
+                                        <div class="form-group radio-form">
+                                            <div class="radio-group"  style="float: left;">
+                                                <input type="radio" id="to_university1" name="to_university" value="true" checked>
+                                                <label for="to_university1">
+                                                    <span>Да</span>
+                                                </label>
+                                            </div>
+                                            <div class="radio-group"  style="float: left;">
+                                                <input type="radio" id="to_university2" name="to_university" value="false">
+                                                <label for="to_university2">
+                                                    <span>Нет</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="operator4-col">
+                                    <div class="form-title">
+                                            <h2>Специальности</h2>
+                                        </div>
+                                        <div class="operator4-item">
+                                            <div class="form-group">
+                                                <div id="outputChoose"></div>
+                                                <select data-placeholder="Выберите страны..." name="des_countries" multiple class="chosen-select">
+                                                    {{ range $p := .professions }}
+                                                        <option value="{{ $p.Id }}">e{{ $p.NameRu }}</option>
+                                                    {{ end }}
+                                                </select>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-3">
+                                <div class="operator4-col">
+                                    <div class="form-title">
+                                        <h2>Наличие или отсутствие судимости</h2>
+                                    </div>
+                                    <div class="operator4-item">
+                                        <div class="form-group">
+                                            <label for="criminalNumber">Номер справки (Наличие или отсутствие судимости)</label>
+                                            <input name="criminal_number" type="text" class="form-control" id="criminalNumber" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="criminalIssue">Дата выдачи</label>
+                                            <input name="criminal_issue" autocomplete="off" type="text" class="datepickerFrom form-control" data-date-format="dd.mm.yyyy" id="criminalIssue" autocomplete="off" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="criminalComment">Комментарий <i>(не обязательно)</i></label>
+                                            <textarea name="criminal_comment" rows="5" class="form-control" id="criminalComment"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div class="col-md-3">
+                                <div class="operator4-col">
+                                    <div class="form-title">
+                                        <h2>Дополнительная информация</h2>
+                                    </div>
+                                    <div class="operator4-item">
+                                        <div class="form-group">
+                                            <label for="addSpecSigns">Особые приметы<i>(не обязательно)</i></label>
+                                            <input name="add_spec_signs" type="text" class="form-control" id="addSpecSigns">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="hobby">Хобби <i>(не обязательно)</i></label>
+                                            <input name="hobby" type="text" class="form-control" id="hobby">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="other">Дополнительно<i>(не обязательно)</i></label>
+                                            <textarea name="other" rows="5" class="form-control" id="other"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="operator4-col__psixolog">
+                                    <div class="form-title">
+                                        <h2>Уровень</h2>
+                                    </div>
+                                    <div class="form-group radio-form">
+                                        <div class="radio-group">
+                                            <input type="radio" id="student" name="level" value="is_student">
+                                            <label for="student">
+                                                <span>Студент</span>
+                                            </label>
+                                        </div>
+                                        <div class="radio-group">
+                                            <input type="radio" id="youthTalent" name="level" value="is_young_talent">
+                                            <label for="youthTalent">
+                                                <span>Юный талант</span>
+                                            </label>
+                                        </div>
+                                        <div class="radio-group">
+                                            <input type="radio" id="isEmployee" name="level" value="is_employee">
+                                            <label for="isEmployee">
+                                                <span>Аппликант</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-title">
+                                    <h2 class="fingerprint-title">Отпечаток пальца</h2>
+                                </div>
+                                <div class="finger-print">
+                                    <div class="finger-image" style="background-image: url('');">
+                                        <input id="fingerPrint" type="hidden" value="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-send__buttons">
+                                <div class="form-send__button" id="form4SendButton">
+                                    <button id="form4Send" data-url="/api/operator-4/{{ .employee.Id }}/save" type="submit">Сохранить</button>
+                                </div>
+                                <div class="form-reset__buttton">
+                                    <button type="reset">Очистить</button>
+                                </div>
+                            </div>
+                        </form>
+                        <!--<div class="holder">
+                            <div class="preloader"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                        </div>-->
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+            <footer>
+                <div class="footer-main">
+                    <div class="copy">
+                        © «NCD CRM v1.0», 2019
+                    </div>
+                    <div class="dev">
+                        Разработка CRM-системы: <a href='#'>Online Service Group</a>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <div class="sideRight">
+            <div class="help-block">
+                <div class="help-block__icon">
+                    <a href="#">
+                        <i class="fa fa-book" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="bx-informer">
+                <div class="bx-im-informer-icon">
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle waves-effect waves-dark" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bell" aria-hidden="true"></i></a>
+                        <div class="dropdown-menu dropdown-menu-right animated flipInY">
+                            <ul class="dropdown-not">
+                                <li>
+                                    <a href="#">Список аппликантов</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="operator2Notification">
+                        <span id="notification-counter">0</span>
+                    </div>
+                </div>
+            </div>
+            <div class="bx-informer">
+                <div class="bx-im-informer-icon" style="background: #05b5ab;">
+                    <a href="#" title="Список аппликантов">
+                        <i class="fa fa-list-alt" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="bx-search">
+                <div class="bx-im-search-icon">
+                    <a href="#">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+        <div id="mainSuccess">Успешно сохранено</div>
+        <div id="mainError">Произошла ошибка</div>
+        <div id="wsSuccess">Сканер отпечатков пальцев обнаружен</div>
+        <div id="wsError">Сканер отпечатков пальцев не обнаружен</div>
+        <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog change-password">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Change password</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="">
+                            <div class="form-group">
+                                <label for="newLogin">Имя пользователя</label>
+                                <input name="new_login" type="text" class="form-control" id="newLogin">
+                            </div>
+                            <div class="form-group">
+                                <label for="newPass">New password</label>
+                                <input name="new_pass" type="password" class="form-control" id="newPass">
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPass">Password confirm</label>
+                                <input name="conf_pass" type="password" class="form-control" id="confirmPass">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="changePassButton" data-url="wtf" type="button" class="btn btn-default">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <script>
+        $(document).ready(function(){
+            $('#changePassButton').click(function (event) {
+                event.preventDefault();
+                let $formData = new FormData();
+                let url = $(this).data("url");
+
+                $formData.append("username", $("#newLogin").val());
+                $formData.append("password", $("#newPass").val());
+                $formData.append("password_confirm", $("#confirmPass").val());
+
+                $.ajax({
+                    url: "#",
+                    data: $formData,
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        var x = document.getElementById("mainSuccess");
+                        x.className = "show";
+                        setTimeout(function(){
+                            x.className = x.className.replace("show", "");
+                            location.reload();
+                        }, 1500);
+                    },
+                    error: function (data) {
+                        var x = document.getElementById("mainError");
+
+                        x.className = "show";
+                        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+                    },
+                });
+            });
+        });
+    </script>
+    <script src="/static/operator/js/custom.js"></script>
+    <script src="/static/operator/chosen_v1.8.7/chosen.jquery.js"></script>
+    <script>
+        /*document.getElementById('outputChoose').innerHTML = location.search;*/
+        $(".chosen-select").chosen();
+    </script>
+    <script>
+        var scanCheck = false;
+        $(function(){
+            var wsurl = 'wss://localhost:8383/';
+            var wsScan = new WebSocket(wsurl);
+            wsScan.onopen = function (data) {
+                var x = document.getElementById("wsSuccess");
+                x.className = "show";
+                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+            };
+            wsScan.onerror = function(){
+                var x = document.getElementById("wsError");
+                x.className = "show";
+                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+            };
+
+            wsScan.onmessage = function(e) {
+                var data = e.data;
+                //console.log(e.data);
+                var image = new Image();
+                base64_string = 'data:image/jpg;base64,'+e.data;
+                image.src = 'data:image/jpg;base64,'+e.data;
+
+                $('.finger-image').css('background-image', 'url('+image.src +')');
+                $('#fingerPrint').attr("value", image.src);
+                scanCheck = true;
+            }
+        });
+    </script>
+    <script src="/static/operator/js/stol/operator4.js"></script>
+
+    </body>
+    </html>
+{{ end }}
