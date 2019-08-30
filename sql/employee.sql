@@ -1,0 +1,9 @@
+alter table employee alter column created set default now();
+alter table employee alter column updated set default now();
+alter table employee alter column send_sms set default false;
+alter table employee alter column send_email set default false;
+alter table employee alter column op2_ws_sent set default false;
+alter table employee alter column op3_ws_sent set default false;
+alter table employee alter column op4_ws_sent set default false;
+alter table employee alter column birth_place_en set default '';
+alter table employee alter column living_address_en set default '';
