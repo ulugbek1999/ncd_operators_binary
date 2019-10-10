@@ -104,7 +104,7 @@ func Operator1CreateAPI(w http.ResponseWriter, r *http.Request) {
 	data := url.Values{}
 	data.Add("emp_id", strconv.Itoa(id))
 	req, err := http.NewRequest("POST", s.Conf["BASE_DOMAIN"]+"api/v2/ncd/user/create/", bytes.NewBufferString(data.Encode()))
-	fmt.Println(s.Conf["BASE_DOMAIN"])
+	fmt.Println(err)
 	raven.ReportIfError(err)
 	var client = &http.Client{}
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")

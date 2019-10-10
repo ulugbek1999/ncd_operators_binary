@@ -2,8 +2,6 @@ package server
 
 import (
 	"fmt"
-	"github.com/gorilla/mux"
-	"github.com/urfave/cli"
 	"log"
 	"ncd_operators/middlewares"
 	"ncd_operators/pkg/raven"
@@ -11,6 +9,9 @@ import (
 	"ncd_operators/routers/api"
 	"ncd_operators/routers/operators"
 	"net/http"
+
+	"github.com/gorilla/mux"
+	"github.com/urfave/cli"
 )
 
 func StartWebServer(c *cli.Context) {
@@ -76,6 +77,7 @@ func StartWebServer(c *cli.Context) {
 	s.Mux.HandleFunc("/api/operator-4/{id}/save", api.Operator4SaveAPI).Methods("POST")
 
 	s.Mux.HandleFunc("/", middlewares.AuthMiddleware(operators.IndexPage)).Methods("GET")
+	s.Mux.HandleFunc("/operator-universal", middlewares.AuthMiddleware(operators.Operator5Page)).Methods("GET")
 
 	log.Printf("WebServer is running on http://%s", addr)
 	err := http.ListenAndServe(addr, s.Mux)

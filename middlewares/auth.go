@@ -1,10 +1,11 @@
 package middlewares
 
 import (
-	"github.com/gorilla/context"
 	m "ncd_operators/models"
 	s "ncd_operators/pkg/settings"
 	"net/http"
+
+	"github.com/gorilla/context"
 )
 
 func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
@@ -52,7 +53,7 @@ func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 		       op.id = og.operator1_id
 		    OR op.id = og.operator2_id
 		    OR op.id = og.operator3_id
-		    OR op.id = og.operator4_id
+			OR op.id = og.operator4_id
 	INNER JOIN
 		directory_district dd ON og.district_id = dd.id
 	INNER JOIN 
