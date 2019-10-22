@@ -1,13 +1,4 @@
 
-    $("#phone").inputmask({
-        "mask": "+998-dd-ddd-dddd"
-    });
-    $("#inn").inputmask({
-        "mask": "ddddddddd"
-    });
-    $("#passportSerial").inputmask({
-        "mask": "AA ddddddd"
-    });
     function dateMyFormat(date) {
         var elem = date.split('.');
         var newMyDate = elem[2] + '-' + elem[1] + '-' + elem[0];

@@ -2759,7 +2759,7 @@ However, delay the fade out process for 2.5 seconds */
     bottom: 0;
 }
 .delete-button a.deleteButton{
-    color: red;
+    color: rgb(207, 18, 18);
     text-decoration: none;
 }
 

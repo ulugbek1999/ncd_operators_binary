@@ -78,6 +78,7 @@ func StartWebServer(c *cli.Context) {
 
 	s.Mux.HandleFunc("/", middlewares.AuthMiddleware(operators.IndexPage)).Methods("GET")
 	s.Mux.HandleFunc("/operator-universal", middlewares.AuthMiddleware(operators.Operator5Page)).Methods("GET")
+	s.Mux.HandleFunc("/api/operator-universal", api.UniversalCreateAPI).Methods("POST")
 
 	log.Printf("WebServer is running on http://%s", addr)
 	err := http.ListenAndServe(addr, s.Mux)

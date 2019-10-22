@@ -1,13 +1,14 @@
 package api
 
 import (
-	"github.com/gorilla/mux"
-	"github.com/jmoiron/sqlx"
 	m "ncd_operators/models"
 	"ncd_operators/pkg/raven"
 	s "ncd_operators/pkg/settings"
-	"ncd_operators/pkg/utils"
+	u "ncd_operators/pkg/utils"
 	"net/http"
+
+	"github.com/gorilla/mux"
+	"github.com/jmoiron/sqlx"
 )
 
 func EducationCreateAPI(w http.ResponseWriter, r *http.Request) {
@@ -18,8 +19,8 @@ func EducationCreateAPI(w http.ResponseWriter, r *http.Request) {
 	nameRu := r.FormValue("name_ru")
 	addressRu := r.FormValue("address_ru")
 	specializationRu := r.FormValue("specialization_ru")
-	dateStarted := r.FormValue("date_started")
-	dateFinished := r.FormValue("date_finished")
+	dateStarted := u.NewNullTime(r.FormValue("date_started"))
+	dateFinished := u.NewNullTime(r.FormValue("date_finished"))
 	additionalRu := r.FormValue("additional_ru")
 
 	q := `INSERT INTO employee__education (name_ru, address_ru, specialization_ru, date_started,
@@ -51,7 +52,7 @@ func EducationCreateAPI(w http.ResponseWriter, r *http.Request) {
 	}
 	e, err := m.EmployeeById(vars["id"])
 	raven.ReportIfError(err)
-	fNames := utils.FileSave(r, "education", e.PassportSerial)
+	fNames := u.FileSave(r, "education", e.PassportSerial)
 	for i := range fNames {
 		if fNames[i] != "" {
 			_, err = s.UDB.NamedExec(`INSERT INTO employee__education__file (file, education_id) VALUES (:file, :edu_id)`,
@@ -94,7 +95,7 @@ func LanguageCreateAPI(w http.ResponseWriter, r *http.Request) {
 	}
 	e, err := m.EmployeeById(vars["id"])
 	raven.ReportIfError(err)
-	fNames := utils.FileSave(r, "language", e.PassportSerial)
+	fNames := u.FileSave(r, "language", e.PassportSerial)
 	for i := range fNames {
 		if fNames[i] != "" {
 			_, err = s.UDB.NamedExec(`insert into employee__language__file (file, language_id) values (:file, :lang_id)`,
@@ -121,8 +122,8 @@ func ArmyCreateAPI(w http.ResponseWriter, r *http.Request) {
 		"name_ru":           r.FormValue("name_ru"),
 		"region_ru":         r.FormValue("region_ru"),
 		"specialization_ru": r.FormValue("specialization_ru"),
-		"date_started":      r.FormValue("date_started"),
-		"date_finished":     r.FormValue("date_finished"),
+		"date_started":      u.NewNullTime(r.FormValue("date_started")),
+		"date_finished":     u.NewNullTime(r.FormValue("date_finished")),
 		"rank_ru":           r.FormValue("rank_ru"),
 		"is_new":            false,
 		"employee_id":       vars["id"],
@@ -140,7 +141,7 @@ func ArmyCreateAPI(w http.ResponseWriter, r *http.Request) {
 	}
 	e, err := m.EmployeeById(vars["id"])
 	raven.ReportIfError(err)
-	fNames := utils.FileSave(r, "army", e.PassportSerial)
+	fNames := u.FileSave(r, "army", e.PassportSerial)
 	for i := range fNames {
 		if fNames[i] != "" {
 			_, err = s.UDB.NamedExec(`INSERT INTO employee__army__file (file, army_id) VALUES (:file, :army_id)`,
@@ -181,7 +182,7 @@ func RewardCreateAPI(w http.ResponseWriter, r *http.Request) {
 	}
 	e, err := m.EmployeeById(vars["id"])
 	raven.ReportIfError(err)
-	fNames := utils.FileSave(r, "reward", e.PassportSerial)
+	fNames := u.FileSave(r, "reward", e.PassportSerial)
 	for i := range fNames {
 		if fNames[i] != "" {
 			_, err = s.UDB.NamedExec(`insert into employee__reward__file (file, reward_id) values (:file, :reward_id)`,
@@ -221,7 +222,7 @@ func FamilyCreateAPI(w http.ResponseWriter, r *http.Request) {
 	}
 	e, err := m.EmployeeById(vars["id"])
 	raven.ReportIfError(err)
-	fNames := utils.FileSave(r, "family", e.PassportSerial)
+	fNames := u.FileSave(r, "family", e.PassportSerial)
 	for i := range fNames {
 		if fNames[i] != "" {
 			_, err = s.UDB.NamedExec(`insert into employee__family__file (file, family_id) values (:file, :family_id)`,
@@ -266,7 +267,7 @@ func RelativeCreateAPI(w http.ResponseWriter, r *http.Request) {
 	}
 	e, err := m.EmployeeById(vars["id"])
 	raven.ReportIfError(err)
-	fNames := utils.FileSave(r, "relative", e.PassportSerial)
+	fNames := u.FileSave(r, "relative", e.PassportSerial)
 	for i := range fNames {
 		if fNames[i] != "" {
 			_, err = s.UDB.NamedExec(`insert into employee__relative__file (file, relative_id) values (:file, :relative_id)`,
@@ -290,8 +291,8 @@ func ExperienceCreateAPI(w http.ResponseWriter, r *http.Request) {
           (:organization_ru, :date_started, :date_finished, :position_ru, :sub_division_ru, :address_ru, :is_new, :employee_id) RETURNING id`
 	rows, err = s.UDB.NamedQuery(q, map[string]interface{}{
 		"organization_ru": r.FormValue("organization_ru"),
-		"date_started":    r.FormValue("date_started"),
-		"date_finished":   r.FormValue("date_finished"),
+		"date_started":    u.NewNullTime(r.FormValue("date_started")),
+		"date_finished":   u.NewNullTime(r.FormValue("date_finished")),
 		"position_ru":     r.FormValue("position_ru"),
 		"sub_division_ru": r.FormValue("sub_division_ru"),
 		"address_ru":      r.FormValue("address_ru"),
@@ -311,7 +312,7 @@ func ExperienceCreateAPI(w http.ResponseWriter, r *http.Request) {
 	}
 	e, err := m.EmployeeById(vars["id"])
 	raven.ReportIfError(err)
-	fNames := utils.FileSave(r, "experience", e.PassportSerial)
+	fNames := u.FileSave(r, "experience", e.PassportSerial)
 	for i := range fNames {
 		if fNames[i] != "" {
 			_, err = s.UDB.NamedExec(`insert into employee__experience__file (file, experience_id) values (:file, :experience_id)`,
@@ -362,7 +363,7 @@ func EducationEditAPI(w http.ResponseWriter, r *http.Request) {
 	})
 	raven.ReportIfError(err)
 	e, _ := m.EmployeeById(vars["emp_id"])
-	fNames := utils.FileSave(r, "education", e.PassportSerial)
+	fNames := u.FileSave(r, "education", e.PassportSerial)
 	for i := range fNames {
 		if fNames[i] != "" {
 			_, err = s.UDB.NamedExec(`INSERT INTO employee__education__file (file, education_id) VALUES (:file, :edu_id)`,
@@ -393,7 +394,7 @@ func ArmyEditAPI(w http.ResponseWriter, r *http.Request) {
 	})
 	raven.ReportIfError(err)
 	e, _ := m.EmployeeById(vars["emp_id"])
-	fNames := utils.FileSave(r, "army", e.PassportSerial)
+	fNames := u.FileSave(r, "army", e.PassportSerial)
 	for i := range fNames {
 		if fNames[i] != "" {
 			_, err = s.UDB.NamedExec(`INSERT INTO employee__army__file (file, army_id) VALUES (:file, :army_id)`,
@@ -421,7 +422,7 @@ func LanguageEditAPI(w http.ResponseWriter, r *http.Request) {
 	})
 	raven.ReportIfError(err)
 	e, _ := m.EmployeeById(vars["emp_id"])
-	fNames := utils.FileSave(r, "language", e.PassportSerial)
+	fNames := u.FileSave(r, "language", e.PassportSerial)
 	for i := range fNames {
 		if fNames[i] != "" {
 			_, err = s.UDB.NamedExec(`insert into employee__language__file (file, language_id) values (:file, :lang_id)`,
@@ -448,7 +449,7 @@ func FamilyEditAPI(w http.ResponseWriter, r *http.Request) {
 	})
 	raven.ReportIfError(err)
 	e, _ := m.EmployeeById(vars["emp_id"])
-	fNames := utils.FileSave(r, "family", e.PassportSerial)
+	fNames := u.FileSave(r, "family", e.PassportSerial)
 	for i := range fNames {
 		if fNames[i] != "" {
 			_, err = s.UDB.NamedExec(`insert into employee__family__file (file, family_id) values (:file, :family_id)`,
@@ -479,7 +480,7 @@ func RelativeEditAPI(w http.ResponseWriter, r *http.Request) {
 	})
 	raven.ReportIfError(err)
 	e, _ := m.EmployeeById(vars["emp_id"])
-	fNames := utils.FileSave(r, "relative", e.PassportSerial)
+	fNames := u.FileSave(r, "relative", e.PassportSerial)
 	for i := range fNames {
 		if fNames[i] != "" {
 			_, err = s.UDB.NamedExec(`insert into employee__relative__file (file, relative_id) values (:file, :relative_id)`,
@@ -510,7 +511,7 @@ func ExperienceEditAPI(w http.ResponseWriter, r *http.Request) {
 	})
 	raven.ReportIfError(err)
 	e, _ := m.EmployeeById(vars["emp_id"])
-	fNames := utils.FileSave(r, "experience", e.PassportSerial)
+	fNames := u.FileSave(r, "experience", e.PassportSerial)
 	for i := range fNames {
 		if fNames[i] != "" {
 			_, err = s.UDB.NamedExec(`insert into employee__experience__file (file, experience_id) values (:file, :experience_id)`,
@@ -537,7 +538,7 @@ func RewardEditAPI(w http.ResponseWriter, r *http.Request) {
 	})
 	raven.ReportIfError(err)
 	e, _ := m.EmployeeById(vars["emp_id"])
-	fNames := utils.FileSave(r, "reward", e.PassportSerial)
+	fNames := u.FileSave(r, "reward", e.PassportSerial)
 	for i := range fNames {
 		if fNames[i] != "" {
 			_, err = s.UDB.NamedExec(`insert into employee__reward__file (file, reward_id) values (:file, :reward_id)`,

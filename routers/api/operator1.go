@@ -12,13 +12,14 @@ import (
 
 	m "ncd_operators/models"
 	s "ncd_operators/pkg/settings"
-	"ncd_operators/pkg/utils"
+	u "ncd_operators/pkg/utils"
 	"net/http"
 	"net/url"
 
 	"github.com/gorilla/context"
 )
 
+// Operator1CreateAPI handles requests from operator 1 template
 func Operator1CreateAPI(w http.ResponseWriter, r *http.Request) {
 	var (
 		err  error
@@ -32,18 +33,17 @@ func Operator1CreateAPI(w http.ResponseWriter, r *http.Request) {
 	username := r.FormValue("username")
 	fullNameRu := r.FormValue("full_name_ru")
 	fullNameEn := r.FormValue("full_name_en")
-	birthDate := r.FormValue("birth_date")
+	birthDate := u.NewNullTime(r.FormValue("birth_date"))
 	phone := r.FormValue("phone")
 	email := r.FormValue("email")
 	gender := r.FormValue("gender")
 	passportSerial := r.FormValue("passport_serial")
-	passportExpires := r.FormValue("passport_expires")
-	passportGivenDate := r.FormValue("passport_given_date")
+	passportExpires := u.NewNullTime(r.FormValue("passport_expires"))
+	passportGivenDate := u.NewNullTime(r.FormValue("passport_given_date"))
 	inn := r.FormValue("inn")
 	birthPlaceRu := r.FormValue("birth_place_ru")
 	livingAddressRu := r.FormValue("living_address_ru")
 	registerNumber := r.FormValue("register_number")
-
 	q := `INSERT INTO employee (
 		step_finished, full_name_ru, full_name_en, passport_serial, passport_given_date,
      	passport_expires, birth_date, birth_place_ru, living_address_ru, gender, inn,
@@ -88,7 +88,8 @@ func Operator1CreateAPI(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	fNames := utils.FileSave(r, "passport_image", r.FormValue("passport_serial"))
+
+	fNames := u.FileSave(r, "passport_image", r.FormValue("passport_serial"))
 	for i := range fNames {
 
 		if fNames[i] != "" {

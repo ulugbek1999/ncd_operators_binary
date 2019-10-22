@@ -1,4 +1,4 @@
-$(function() {
+(function() {
     var data = [ ["January", 10], ["February", 8], ["March", 4], ["April", 13], ["May", 17], ["June", 9] ];
 
     $.plot("#catchart", [ data ], {

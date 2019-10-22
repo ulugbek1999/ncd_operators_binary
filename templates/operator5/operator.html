@@ -18,6 +18,7 @@
         <link href="/static/operator/css/alerty.css" rel="stylesheet">
         <link href="/static/operator/css/styles.css" rel="stylesheet">
         <link href="/static/operator/css/media.css" rel="stylesheet">
+        <link rel="stylesheet" href="/static/operator/fancybox/jquery.fancybox.min.css">
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="/static/operator/js/jquery.js"></script>
@@ -156,12 +157,12 @@
                     <h2>Зарегистрировать аппликанта</h2>
                     <span>№: {{ .register_number }}</span>
                 </div>
+                <form>
                 <div class="card-main" id="operator-1">
                     <div class="card-main__header">
                         <h2>Личная карточка аппликанта</h2>
                     </div>
                     <div class="card-main__content">
-                        <form>
                             <input id="group-id" type="hidden" value="1">
                             <div class="col-md-4">
                                 <div class="stol1-col-form">
@@ -299,7 +300,6 @@
                         <h2>Личная карточка аппликанта</h2>
                     </div>
                     <div class="card-main__content">
-                        <form>
                             <div class="col-md-3">
                                 <div class="stol2-col-form">
                                     <div class="form-group radio-form">
@@ -529,7 +529,6 @@
                                     <button type="reset">Очистить</button>
                                 </div>
                             </div>
-                        </form>
                         <div class="clearfix"></div>
                     </div>
                 </div>
@@ -545,53 +544,8 @@
                                         <h4 class="panel-title">Образование <i class="fa fa-chevron-up pull-right"></i></h4>
                                     </div>
                                     <div id="educations-view" class="panel-collapse collapse">
-                                        <div class="panel-body">
-                                            <a href="" class="addButtonProfile" id="add-edu">Добавить</a>
-                                            {{ range $edu := .educations }}
-                                                <div class="op3View-item">
-                                                    <ul>
-                                                        <li>
-                                                            <strong>Тип/вид учебного заведения:</strong>
-                                                            <span>{{ $edu.EducationType.NameRu }}</span>
-                                                        </li>
-                                                        <li>
-                                                            <strong>Учебное заведение:</strong>
-                                                            <span>{{ $edu.NameRu }}</span>
-                                                        </li>
-                                                        <li>
-                                                            <strong>Адрес учебного заведения:</strong>
-                                                            <span>{{ $edu.AddressRu }}</span>
-                                                        </li>
-                                                        <li>
-                                                            <strong>Специальность:</strong>
-                                                            <span>{{ $edu.SpecializationRu }}</span>
-                                                        </li>
-                                                        <li>
-                                                            <strong>Дата начала обучения:</strong>
-                                                            <span>{{ $edu.DateStartedFormat }}</span>
-                                                        </li>
-                                                        <li>
-                                                            <strong>Дата окончания обучения:</strong>
-                                                            <span>{{ $edu.DateFinishedFormat }}</span>
-                                                        </li>
-                                                        <li>
-                                                            <strong>Прочие данные об учебе:</strong>
-                                                            <span>{{ $edu.AdditionalRu }}</span>
-                                                        </li>
-                                                        <li class="files-view">
-                                                            <ul class="files-view__main">
-                                                                {{ range $file := $edu.Files }}
-                                                                    <li>
-                                                                        <a data-fancybox href="{{ $.mediaUrl }}{{ $file.File }}"><i class="fa fa-file" aria-hidden="true"></i>{{ $file.File }}</a>
-            {{/*                                                            <span>file size</span>*/}}
-                                                                    </li>
-                                                                {{ end }}
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
-                                                    <a href="/operator-3/{{ $edu.Id }}/{{ $.employee.Id }}/edit/education" class="editButtonProfile">Изменить</a>
-                                                </div>
-                                            {{ end }}
+                                        <div class="panel-body" id="edu-panel">
+                                            <a href="#" class="addButtonProfile" id="add-edu">Добавить</a>
                                         </div>
                                     </div>
                                 </div>
@@ -600,33 +554,8 @@
                                         <h4 class="panel-title">Знание языков<i class="fa fa-chevron-up pull-right"></i></h4>
                                     </div>
                                     <div id="language-view" class="panel-collapse collapse">
-                                        <div class="panel-body">
+                                        <div class="panel-body" id="lang-panel">
                                             <a href="" class="addButtonProfile" id="add-lang">Добавить</a>
-                                            {{ range $lang := .languages }}
-                                                <div class="op3View-item">
-                                                    <ul>
-                                                        <li>
-                                                            <strong>Название языка:</strong>
-                                                            <span>{{ $lang.NameRu }}</span>
-                                                        </li>
-                                                        <li>
-                                                            <strong>Уровень знания:</strong>
-                                                            <span>{{ $lang.LevelDisplay }}</span>
-                                                        </li>
-                                                        <li class="files-view">
-                                                            <ul class="files-view__main">
-                                                                {{ range $file := $lang.Files }}
-                                                                    <li>
-                                                                        <a data-fancybox href="{{ $.mediaUrl }}{{ $file.File }}"><i class="fa fa-file" aria-hidden="true"></i>{{ $file.File }}</a>
-                                                                        {{/*                                                            <span>file size</span>*/}}
-                                                                    </li>
-                                                                {{ end }}
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
-                                                    <a href="/operator-3/{{ $lang.Id }}/{{ $.employee.Id }}/edit/language" class="editButtonProfile">Изменить</a>
-                                                </div>
-                                            {{ end }}
                                         </div>
                                     </div>
                                 </div>
@@ -635,49 +564,9 @@
                                         <h4 class="panel-title">Служба в армии<i class="fa fa-chevron-up pull-right"></i></h4>
                                     </div>
                                     <div id="militaryView" class="panel-collapse collapse">
-                                        <div class="panel-body">
+                                        <div class="panel-body" id="army-panel">
                                             <a href="" class="addButtonProfile" id="add-army">Добавить</a>
-                                            {{ range $army := .army }}
-                                                <div class="op3View-item">
-                                                    <ul>
-                                                        <li>
-                                                            <strong>Наименование воинской части:</strong>
-                                                            <span>{{ $army.NameRu }}</span>
-                                                        </li>
-                                                        <li>
-                                                            <strong>Дата начала службы:</strong>
-                                                            <span>{{ $army.DateStartedFormat }}</span>
-                                                        </li>
-                                                        <li>
-                                                            <strong>Регион:</strong>
-                                                            <span>{{ $army.RegionRu }}</span>
-                                                        </li>
-                                                        <li>
-                                                            <strong>Дата окончания службы:</strong>
-                                                            <span>{{ $army.DateFinishedFormat }}</span>
-                                                        </li>
-                                                        <li>
-                                                            <strong>Специальность:</strong>
-                                                            <span>{{ $army.SpecializationRu }}</span>
-                                                        </li>
-                                                        <li>
-                                                            <strong>Звание:</strong>
-                                                            <span>{{ $army.RankRu }}</span>
-                                                        </li>
-                                                        <li class="files-view">
-                                                            <ul class="files-view__main">
-                                                                {{ range $file := $army.Files }}
-                                                                    <li>
-                                                                        <a data-fancybox href="{{ $.mediaUrl }}{{ $file.File }}"><i class="fa fa-file" aria-hidden="true"></i>{{ $file.File }}</a>
-                                                                        {{/*                                                            <span>file size</span>*/}}
-                                                                    </li>
-                                                                {{ end }}
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
-                                                    <a href="/operator-3/{{ $army.Id }}/{{ $.employee.Id }}/edit/army" class="editButtonProfile">Изменить</a>
-                                                </div>
-                                            {{ end }}
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -686,33 +575,8 @@
                                         <h4 class="panel-title">Полученные награды<i class="fa fa-chevron-up pull-right"></i></h4>
                                     </div>
                                     <div id="receivedView" class="panel-collapse collapse">
-                                        <div class="panel-body">
+                                        <div class="panel-body" id="rew-panel">
                                             <a href="\" class="addButtonProfile" id="add-rew">Добавить</a>
-                                            {{ range $reward := .rewards }}
-                                                <div class="op3View-item">
-                                                    <ul>
-                                                        <li>
-                                                            <strong>Название:</strong>
-                                                            <span>{{ $reward.NameRu }}</span>
-                                                        </li>
-                                                        <li>
-                                                            <strong>Комментарий:</strong>
-                                                            <span>{{ $reward.DescriptionRu }}</span>
-                                                        </li>
-                                                        <li class="files-view">
-                                                            <ul class="files-view__main">
-                                                                {{ range $file := $reward.Files }}
-                                                                    <li>
-                                                                        <a data-fancybox href="{{ $.mediaUrl }}{{ $file.File }}"><i class="fa fa-file" aria-hidden="true"></i>{{ $file.File }}</a>
-                                                                        {{/*                                                            <span>file size</span>*/}}
-                                                                    </li>
-                                                                {{ end }}
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
-                                                    <a href="/operator-3/{{ $reward.Id }}/{{ $.employee.Id }}/edit/reward" class="editButtonProfile">Изменить</a>
-                                                </div>
-                                            {{ end }}
                                         </div>
                                     </div>
                                 </div>
@@ -721,36 +585,8 @@
                                         <h4 class="panel-title">Семейный статус<i class="fa fa-chevron-up pull-right"></i></h4>
                                     </div>
                                     <div id="familyView" class="panel-collapse collapse">
-                                        <div class="panel-body">
-                                            {{ if .family }}
-                                            {{ else }}
-                                                <a href="" class="addButtonProfile" id="add-family">Добавить</a>
-                                            {{ end }}
-                                            {{ range $fam := .family }}
-                                                <div class="op3View-item">
-                                                    <ul>
-                                                        <li>
-                                                            <strong>Семейный статус:</strong>
-                                                            <span>{{ $fam.StatusDisplay }}</span>
-                                                        </li>
-                                                        <li>
-                                                            <strong>Количество детей:</strong>
-                                                            <span>{{ $fam.ChildrenAmount }}</span>
-                                                        </li>
-                                                        <li class="files-view">
-                                                            <ul class="files-view__main">
-                                                                {{ range $file := $fam.Files }}
-                                                                    <li>
-                                                                        <a data-fancybox href="{{ $.mediaUrl }}{{ $file.File }}"><i class="fa fa-file" aria-hidden="true"></i>{{ $file.File }}</a>
-                                                                        {{/*                                                            <span>file size</span>*/}}
-                                                                    </li>
-                                                                {{ end }}
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
-                                                    <a href="/operator-3/{{ $fam.Id }}/{{ $.employee.Id }}/edit/family" class="editButtonProfile">Изменить</a>
-                                                </div>
-                                            {{ end }}
+                                        <div class="panel-body" id="family-panel">
+                                            <a href="" class="addButtonProfile" id="add-family">Добавить</a>
                                         </div>
                                     </div>
                                 </div>
@@ -759,55 +595,11 @@
                                         <h4 class="panel-title">Трудовой опыт<i class="fa fa-chevron-up pull-right"></i></h4>
                                     </div>
                                     <div id="experienceView" class="panel-collapse collapse">
-                                        <div class="panel-body">
+                                        <div class="panel-body" id="exp-panel">
                                             <a href="" class="addButtonProfile" id="add-exp">Добавить</a>
-                                            {{ range $exp := .experiences }}
-                                                <div class="op3View-item">
-                                                    <ul>
-                                                        <li>
-                                                            <strong>Организация:</strong>
-                                                            <span>{{ $exp.OrganizationRu }}</span>
-                                                        </li>
-                                                        <li>
-                                                            <strong>Дата начала работы:</strong>
-                                                            <span>{{ $exp.DateStartedFormat }}</span>
-                                                        </li>
-                                                        <li>
-                                                            <strong>Дата окончания работы:</strong>
-                                                            <span>{{ $exp.DateFinishedFormat }}</span>
-                                                        </li>
-                                                        <li>
-                                                            <strong>Должность:</strong>
-                                                            <span>{{ $exp.PositionRu }}</span>
-                                                        </li>
-                                                        <li>
-                                                            <strong>Подразделение:</strong>
-                                                            <span>{{ $exp.SubDivisionRu }}</span>
-                                                        </li>
-                                                        <li>
-                                                            <strong>Место нахождения/адрес:</strong>
-                                                            <span>{{ $exp.AddressRu }}</span>
-                                                        </li>
-                                                        <li class="files-view">
-                                                            <ul class="files-view__main">
-                                                                {{ range $file := $exp.Files }}
-                                                                    <li>
-                                                                        <a data-fancybox href="{{ $.mediaUrl }}{{ $file.File }}"><i class="fa fa-file" aria-hidden="true"></i>{{ $file.File }}</a>
-                                                                        {{/*                                                            <span>file size</span>*/}}
-                                                                    </li>
-                                                                {{ end }}
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
-                                                    <a href="/operator-3/{{ $exp.Id }}/{{ $.employee.Id }}/edit/experience" class="editButtonProfile">Изменить</a>
-                                                </div>
-                                            {{ end }}
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="transition-buttons">
-                                <a href="#" class="transitionButton">Отправить на 4-оператор</a>
                             </div>
                         </div>
                         
@@ -822,7 +614,7 @@
                         </div>
                         <div class="card-main__content"> 
                             <div class="employee-add3__main">
-                                <form style="padding: 0 15px;">
+                                <div style="padding: 0 15px;">
                                     <input type="hidden" value="" id="employee-id">
                                     <div class="education-item">
                                         <div class="row">
@@ -869,8 +661,9 @@
                                                 <div class="education-file__upload op3-file__upload form-group">
                                                     <label for="">Файлы <i>(не обязательно)</i></label>
                                                     <input type="file"
-                                                            class="filepondEducation"
+                                                            class="filepondEducation eduFiles"
                                                             name="filepond_education"
+                                                            id="eduFiles"
                                                             label-idle="Загрузить файлы"
                                                             multiple
                                                             data-max-file-size="3MB"
@@ -881,11 +674,11 @@
                                         </div>
                                     </div>
                                     <div class="transition-buttons" style="text-align: center;">
-                                        <button id="employeeCreateButton" class="send3Button" data-api="/api/operator-3/{{ .employee.Id }}/add/education" data-redirect-url="/operator-3/{{ .employee.Id }}">
+                                        <button id="eduSave" class="send3Button">
                                             Сохранить
                                         </button>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -899,7 +692,7 @@
                         </div>
                         <div class="card-main__content"> 
                             <div class="employee-add3__main">
-                                <form name="employee_update" style="padding: 0 15px;">
+                                <div name="employee_update" style="padding: 0 15px;">
                                     <input type="hidden" value="1" id="employee-id">
                                     <div class="experience-item">
                                         <div class="row">
@@ -943,6 +736,7 @@
                                                     <input type="file"
                                                             class="filepondExperience"
                                                             name="filepond_experience"
+                                                            id="expFiles"
                                                             label-idle="Загрузить файлы"
                                                             multiple
                                                             data-max-file-size="3MB"
@@ -954,11 +748,11 @@
                                     </div>
                 
                                     <div class="transition-buttons" style="text-align: center;">
-                                        <button id="employeeCreateButton" class="send3Button" data-api="/api/operator-3/{{ .employee.Id }}/add/experience" type="submit" data-redirect-url="/operator-3/{{ .employee.Id }}">
-                                            Отправить
+                                        <button id="exp-save" class="send3Button">
+                                            Сохранить
                                         </button>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -972,7 +766,7 @@
                         </div>
                         <div class="card-main__content"> 
                             <div class="employee-add3__main">
-                                <form name="employee_update" style="padding: 0 15px;">
+                                <div name="employee_update" style="padding: 0 15px;">
                                     <input type="hidden" value="1" id="employee-id">
                                     <div class="received-item">
                                         <div class="row">
@@ -992,6 +786,7 @@
                                                     <label for="">Файлы <i>(не обязательно)</i></label>
                                                     <input type="file"
                                                             class="filepondReceived"
+                                                            id="rewFiles"
                                                             name="filepond_receiveds"
                                                             label-idle="Загрузить файлы"
                                                             multiple
@@ -1004,11 +799,11 @@
                                     </div>
                 
                                     <div class="transition-buttons" style="text-align: center;">
-                                        <button id="employeeCreateButton" class="send3Button" data-api="/api/operator-3/{{ .employee.Id }}/add/reward" type="submit" data-redirect-url="/operator-3/{{ .employee.Id }}">
-                                            Отправить
+                                        <button id="rew-save" class="send3Button">
+                                            Сохранить
                                         </button>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -1022,7 +817,7 @@
                         </div>
                         <div class="card-main__content"> 
                             <div class="employee-add3__main">
-                                <form name="employee_update" style="padding: 0 15px;">
+                                <div name="employee_update" style="padding: 0 15px;">
                                     <input type="hidden" value="1" id="employee-id">
                                     <div class="language-item">
                                         <div class="row">
@@ -1032,7 +827,7 @@
                                                     <select id="langName" class="form-control selectpicker show-tick" name="lang_name" >
                                                         <option value="">Выберите</option>
                                                         {{ range $lang := .dlanguages }}
-                                                            <option value="{{ $lang.Id }}">{{ $lang.NameRu }}</option>
+                                                            <option value="{{ $lang.NameRu }}">{{ $lang.NameRu }}</option>
                                                         {{ end }}
                                                     </select>
                                                 </div>
@@ -1040,9 +835,9 @@
                                                     <label for="langLevel">Уровень знания</label>
                                                     <select id="langLevel" class="form-control selectpicker show-tick" name="lang_level">
                                                         <option value="">Выберите</option>
-                                                        <option value="1">Элементарный</option>
-                                                        <option value="2">Средний</option>
-                                                        <option value="3">Продвинутый</option>
+                                                        <option value="Элементарный">Элементарный</option>
+                                                        <option value="Средний">Средний</option>
+                                                        <option value="Продвинутый">Продвинутый</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -1052,6 +847,7 @@
                                                     <input type="file"
                                                             class="filepondLanguage"
                                                             name="filepond_language"
+                                                            id="langFiles"
                                                             label-idle="Загрузить файлы"
                                                             multiple
                                                             data-max-file-size="3MB"
@@ -1063,11 +859,11 @@
                                     </div>
                 
                                     <div class="transition-buttons" style="text-align: center;">
-                                        <button id="employeeCreateButton" class="send3Button" data-api="/api/operator-3/{{ .employee.Id }}/add/language" type="submit" data-redirect-url="/operator-3/{{ .employee.Id }}">
-                                            Отправить
+                                        <button id="lang-save" class="send3Button"  type="submit">
+                                            Сохранить
                                         </button>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -1081,7 +877,7 @@
                         </div>
                         <div class="card-main__content"> 
                             <div class="employee-add3__main">
-                                <form name="employee_update" style="padding: 0 15px;">
+                                <div name="employee_update" style="padding: 0 15px;">
                                     <div class="marital-status-item" data-files-count="1">
                                         <div class="row">
                                             <div class="col-md-4">
@@ -1116,6 +912,7 @@
                                                     <input type="file"
                                                             class="filepondMarital"
                                                             name="filepond_marital"
+                                                            id="familyFiles"
                                                             label-idle="Загрузить файлы"
                                                             multiple
                                                             data-max-file-size="3MB"
@@ -1127,11 +924,11 @@
                                     </div>
                 
                                     <div class="transition-buttons" style="text-align: center;">
-                                        <button id="employeeEditButton" class="send3Button" data-api="/api/operator-3/{{ .employee.Id }}/add/family" type="submit" data-redirect-url="/operator-3/{{ .employee.Id }}">
-                                            Отправить
+                                        <button id="family-save" class="send3Button"  type="submit">
+                                            Сохранить
                                         </button>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -1145,7 +942,7 @@
                         </div>
                         <div class="card-main__content"> 
                             <div class="employee-add3__main">
-                                <form name="employee_update" style="padding: 0 15px;">
+                                <div name="employee_update" style="padding: 0 15px;">
                                     <input type="hidden" value="123" id="employee-id">
                                     <div class="military-item" data-files-count="1">
                                         <div class="row">
@@ -1188,6 +985,7 @@
                                                     <label for="">Файлы <i>(не обязательно)</i></label>
                                                     <input type="file"
                                                             class="filepondMilitary"
+                                                            id="armyFiles"
                                                             name="filepond_military"
                                                             label-idle="Загрузить файлы"
                                                             multiple
@@ -1199,11 +997,11 @@
                                         </div>
                                     </div>
                                     <div class="transition-buttons" style="text-align: center;">
-                                        <button id="employeeCreateButton" class="send3Button" data-api="/api/operator-3/{{ .employee.Id }}/add/army" type="submit" data-redirect-url="/operator-3/{{ .employee.Id }}">
+                                        <button id="army-save" class="send3Button" type="submit">
                                             Сохранить
                                         </button>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -1214,7 +1012,7 @@
                         <h2>Личная карточка аппликанта</h2>
                     </div>
                     <div class="card-main__content">
-                        <form id="formOperator4">
+                        <div id="formOperator4">
                             <div class="col-md-3">
                                 <div class="operator4-col">
                                     <div class="form-title">
@@ -1256,9 +1054,9 @@
                                 </div>
                                 <div class="operator4-col">
                                     <div class="form-title">
-                                            <h2>Специальности</h2>
+                                            <h2 style="visibility: hidden">Специальности</h2>
                                         </div>
-                                        <div class="operator4-item">
+                                        <div class="operator4-item" style="visibility: hidden">
                                             <div class="form-group">
                                                 <div id="outputChoose"></div>
                                                 <select data-placeholder="Выберите страны..." name="des_countries" multiple class="chosen-select">
@@ -1269,7 +1067,7 @@
                                             </div>
                                         </div>
                                 </div>
-                            </div>
+                            </div> 
                             <!-- <div class="col-md-3">
                                 <div class="operator4-col">
                                     <div class="form-title">
@@ -1354,7 +1152,7 @@
                                     <button type="reset">Очистить</button>
                                 </div>
                             </div>
-                        </form>
+                        </div>
                         <!--<div class="holder">
                             <div class="preloader"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
                         </div>-->
@@ -1362,9 +1160,10 @@
                     </div>
                 </div>
             </div>
-            <div class="form-send__button" id="formSendButton" data-url="/api/operator-1/create">
-                <button type="submit" id="send-universal">Сохранить</button>
+            <div class="form-send__button" id="formSendButton">
+                <button type="submit" id="send-universal" data-api="/api/operator-universal">Сохранить</button>
             </div>
+        </form>
             <div class="prev-next">
                 <div id="prev">Назад</div>
                 <div id="next">Вперед</div>
@@ -1424,46 +1223,10 @@
 
         <div class="clearfix"></div>
     </section>
-
-
-    <script>
-        $(document).ready(function(){
-            $('#changePassButton').click(function (event) {
-                event.preventDefault();
-                let $formData = new FormData();
-                let url = $(this).data("url");
-
-                $formData.append("username", $("#newLogin").val());
-                $formData.append("password", $("#newPass").val());
-                $formData.append("password_confirm", $("#confirmPass").val());
-
-                $.ajax({
-                    url: "#",
-                    data: $formData,
-                    type: "POST",
-                    contentType: false,
-                    processData: false,
-                    success: function (data) {
-                        var x = document.getElementById("mainSuccess");
-                        x.className = "show";
-                        setTimeout(function(){
-                            x.className = x.className.replace("show", "");
-                            location.reload();
-                        }, 1500);
-                    },
-                    error: function (data) {
-                        var x = document.getElementById("mainError");
-
-                        x.className = "show";
-                        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-                    },
-                });
-            });
-        });
-    </script>
+    <script src="/static/operator/fancybox/jquery.fancybox.min.js"></script>
     <script src="/static/operator/js/custom.js"></script>
     <script src="/static/operator/chosen_v1.8.7/chosen.jquery.js"></script>
-    <script src="/static/operator/fancybox/jquery.fancybox.min.js"></script>
+    
     <script src="/static/plugins/filepond/filepond-plugin-file-encode.min.js"></script>
     <script src="/static/plugins/filepond/filepond-plugin-file-validate-size.min.js"></script>
     <script src="/static/plugins/filepond/filepond-plugin-image-exif-orientation.min.js"></script>
@@ -1607,183 +1370,105 @@
         })
     </script>
     <script>
-    const MONTHS = {
-        0: 'Jan',
-        1: 'Feb',
-        2: 'Mar',
-        3: 'Apr',
-        4: 'May',
-        5: 'Jun',
-        6: 'Jul',
-        7: 'Aug',
-        8: 'Sep',
-        9: 'Oct',
-        10: 'Nov',
-        11: 'Dec'
-    };
-    let showTime = true;
+        document.addEventListener("DOMContentLoaded", () => {
 
-    function addZero(val) {
-        return val < 10 ? '0' + val : val;
-    }
+        })
+    </script>
+    <script>
+    var scanCheck = false;
 
-    function refresh() {
-        let now = new Date();
-        if (showTime) {
-            let time = [now.getHours(), now.getMinutes(), now.getSeconds()];
-            time.forEach(function(val, index, arr) {
-                arr[index] = addZero(val);
-            });
-
-            let time_str = time.join(":");
-            //document.title = time_str;
-            document.getElementById('time').innerHTML = time_str;
-        } else {
-            let date = [addZero(now.getDay()), MONTHS[now.getMonth()], now.getFullYear().toString().slice(2, 4)];
-            let date_str = date.join(" ");
-            //document.title = date_str;
-            document.getElementById('time').innerHTML = date_str;
-        }
-    }
-
-    refresh();
-    setInterval(refresh, 1000);
-
-    document.getElementById('time').addEventListener('click', function() {
-        showTime = !showTime;
-        refresh();
-    });
-
-
-    Date.prototype.toShortFormat = function() {
-
-        var month_names =["01","02","03",
-            "04","05","06",
-            "07","08","09",
-            "10","11","12"];
-
-        var day = this.getDate();
-        var month_index = this.getMonth();
-        var year = this.getFullYear();
-
-        if (day < 10) {
-            day = "0" + day;
-        }
-
-        return year + "-" + month_names[month_index] + "-" + day
-        // return "" + day + "-" + month_names[month_index] + "-" + year;
-    };
-    function dateMyFormat(date) {
-        var elem = date.split('.');
-        var newMyDate = elem[2] + '-' + elem[1] + '-' + elem[0];
-        //console.log(newMyDate);
-        if(date){
-            return newMyDate;
-        }else{
-            return '';
-        }
-    }
-    $(function () {
-        $.fn.datepicker.dates['ru'] = {
-            days: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"],
-            daysShort: ["Вск", "Пнд", "Втр", "Срд", "Чтв", "Птн", "Суб"],
-            daysMin: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
-            months: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
-            monthsShort: ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
-            today: "Сегодня",
-            clear: "Очистить",
-            format: "dd.mm.yyyy",
-            weekStart: 1,
-            monthsTitle: 'Месяцы'
-        };
-    }(jQuery));
-    (function($){
-        $.fn.datepicker.dates['uz-latn'] = {
-            days: ["Yakshanba", "Dushanba", "Seshanba", "Chorshanba", "Payshanba", "Juma", "Shanba"],
-            daysShort: ["Yak", "Du", "Se", "Chor", "Pay", "Ju", "Sha"],
-            daysMin: ["Ya", "Du", "Se", "Cho", "Pa", "Ju", "Sha"],
-            months: ["Yanvar", "Fevral", "Mart", "Aprel", "May", "Iyun", "Iyul", "Avgust", "Sentabr", "Oktabr", "Noyabr", "Dekabr"],
-            monthsShort: ["Yan", "Fev", "Mar", "Apr", "May", "Iyn", "Iyl", "Avg", "Sen", "Okt", "Noy", "Dek"],
-            today: "Bugun",
-            clear: "O'chirish",
-            format: "dd.mm.yyyy",
-            weekStart: 1,
-            monthsTitle: 'Oylar'
-        };
-    }(jQuery));
-    $(function () {
-        $(".datepickerFrom").datepicker({
-            autoclose: true,
-            language: 'ru',
-            todayHighlight: true
-        });
-    });
-
-    FilePond.registerPlugin(
-
-        // encodes the file as base64 data
-        FilePondPluginFileEncode,
-
-        // validates the size of the file
-        FilePondPluginFileValidateSize,
-
-        // corrects mobile image orientation
-        FilePondPluginImageExifOrientation,
-
-        // previews dropped images
-        FilePondPluginImagePreview
-    );
-    FilePond.setOptions({
-        instantUpload: false
-    });
-
-    fMil = FilePond.create(document.querySelector(`input.filepondMilitary`));
-
-    $("#employeeCreateButton").click(function(event){
-        event.preventDefault();
-
-        let militaryFormData = new FormData();
-        militaryFormData.append(`employee`, $('#employee-id').val());
-        militaryFormData.append(`name_ru`, $(`input[name='mil_name']`).val());
-        militaryFormData.append(`region_ru`, $(`input[name='mil_region']`).val());
-        militaryFormData.append(`specialization_ru`, $(`input[name='mil_specialization']`).val());
-        militaryFormData.append(`date_started`, dateMyFormat($(`input[name='mil_date_started']`).val()));
-        militaryFormData.append(`date_finished`, dateMyFormat($(`input[name='mil_date_graduated']`).val()));
-        militaryFormData.append(`rank_ru`, $(`input[name='mil_rank']`).val());
-
-        var militaryCountFile = fMil.getFiles().length;
-        for (let j = 0; j < militaryCountFile; j++) {
-            //militaryFormData.append(`file`, fMil[i].getFiles()[j].file);
-            let f = fMil.getFiles()[j].file;
-            let fImage = new File([f], f.name, {type: f.type});
-            militaryFormData.append(`file`, fImage);
-        }
-        redirectUrl = $(this).data("redirect-url");
-        $.ajax({
-            url: $(this).data('api'),
-            data: militaryFormData,
-            processData: false,
-            contentType: false,
-            type: "POST",
-            success: function (data) {
-                var x = document.getElementById("mainSuccess");
+    $(function(){
+        try {
+            var wsurl = 'wss://127.0.0.1:8282/';
+            var ws = new WebSocket(wsurl);
+            ws.onopen = function (data) {
+                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+            };
+            ws.onerror = function(){
+                var x = document.getElementById("wsError");
                 x.className = "show";
-                setTimeout(function(){
-                    x.className = x.className.replace("show", "");
-                    window.location.href = redirectUrl;
-                }, 1500);
-            },
-            error: function (data) {
-                $.magnificPopup.close();
-                var x = document.getElementById("mainError");
+                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+            };
+        } catch (error) {
+            
+        }
+        
 
-                x.className = "show";
-                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+        function readUrlImage(avatar, data){
+            $(`${avatar} #passportPreview`).css('background-image', 'url('+'data:image/jpg;base64,'+data +')');
+            $(`${avatar} > a`).attr("href", `data:image/jpg;base64,${data}`);
+            $(`${avatar} .avatar-edit input`).attr("value", `data:image/jpg;base64,${data}`);
+            $(`${avatar} #passportPreview`).hide();
+            $(`${avatar} #passportPreview`).fadeIn(650);
+            $(`${avatar} .avatar-upload__button`).fadeOut(650);
+        }
+        /*function newDateFormat(date){
+            var mydate = new Date(date);
+            var dd = mydate.getDate();
+            var mm = mydate.getMonth() + 1;
+            var yyyy = mydate.getFullYear();
+
+            if(dd < 10){
+                dd = '0' + dd;
             }
-        });
-    });
-</script>
+            if(mm < 10){
+                mm = '0' + mm;
+            }
 
+            return dd + '.' + mm + '.' + yyyy;
+        }*/
+
+        ws.onmessage = function(e) {
+            var data = JSON.parse(e.data);
+
+            $("#fullNameEn").val(data.first_name + " " + data.last_name);
+            //$("#birthDate").val(new Date(data.birth_date).toShortFormat());
+            //$("#passportExpires").val(new Date(data.expiry_date).toShortFormat());
+            //$("#birthDate").val(data.birth_date);
+            //$("#passportExpires").val(data.expiry_date);
+
+            $("#birthDate").datepicker('update', data.birth_date);
+            $("#passportExpires").datepicker('update', data.expiry_date);
+
+            $("#passportSerial").val(data.serial);
+            readUrlImage('.avatar-upload', data.image);
+
+            if (data.sex === "M") {
+                $("#gender_female").attr("checked", false);
+                $("#gender_male").attr("checked", true);
+            } else if (data.sex === "F") {
+                $("#gender_male").attr("checked", false);
+                $("#gender_female").attr("checked", true);
+            }
+
+            scanCheck = true;
+
+            //$("#birthDate").datepicker('update', data.birth_date));
+            //$("#passportExpires").datepicker('update', data.expiry_date));
+
+        };
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#passportPreview').css('background-image', 'url('+e.target.result +')');
+                    $(`.avatar-upload > a`).attr("href", `${e.target.result}`);
+                    $('#passportPreview').hide();
+                    $('#passportPreview').fadeIn(650);
+                    $('.avatar-upload__button').fadeOut(650);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+            $("#passportUpload").change(function() {
+                readURL(this);
+                scanCheck = false;
+            });
+        });
+    </script>
+    <script src="/static/operator/js/stol/operator2.js"></script>
+    <script src="/static/operator/js/stol/operator5.js"></script>
     </body>
     </html>
 {{ end }}

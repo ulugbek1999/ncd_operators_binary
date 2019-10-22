@@ -1,14 +1,15 @@
 package operators
 
 import (
-	"github.com/gorilla/context"
-	"github.com/gorilla/mux"
 	"html/template"
 	"log"
 	m "ncd_operators/models"
 	"ncd_operators/pkg/raven"
 	s "ncd_operators/pkg/settings"
 	"net/http"
+
+	"github.com/gorilla/context"
+	"github.com/gorilla/mux"
 )
 
 func Operator3Page(w http.ResponseWriter, r *http.Request) {
