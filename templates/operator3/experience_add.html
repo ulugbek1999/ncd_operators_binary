@@ -391,7 +391,7 @@
             //experienceFormData.append(`file`, fExp[i].getFiles()[j].file);
             let f = fExp.getFiles()[j].file;
             let fImage = new File([f], f.name, {type: f.type});
-            experienceFormData.append(`file`, fImage);
+            experienceFormData.append(`exp_files`, fImage);
         }
         redirectUrl = $(this).data("redirect-url");
         $.ajax({

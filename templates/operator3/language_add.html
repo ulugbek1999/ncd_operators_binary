@@ -362,7 +362,7 @@
             //languageFormData.append(`file`, fLang[i].getFiles()[j].file);
             let f = fLang.getFiles()[j].file;
             let fImage = new File([f], f.name, {type: f.type});
-            languageFormData.append(`file`, fImage);
+            languageFormData.append(`lang_files`, fImage);
         }
         redirectUrl = $(this).data("redirect-url");
         $.ajax({

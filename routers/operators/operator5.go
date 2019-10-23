@@ -21,7 +21,7 @@ func Operator5Page(w http.ResponseWriter, r *http.Request) {
 	c := context.Get(r, "user")
 	user := c.(*m.User)
 
-	reg, err := m.GenerateRegisterNumber(user.Operator.OperatorGroup.District.City.Code)
+	reg, err := m.GenerateRegisterNumber("UN")
 	if err != nil {
 		raven.ReportIfError(err)
 		w.Write([]byte("Couldn't generate `register number`"))
@@ -45,8 +45,8 @@ func Operator5Page(w http.ResponseWriter, r *http.Request) {
 		"countries":       m.CountryList(),
 	}
 	fmt.Println(dL)
-	tpl := template.Must(template.ParseFiles("templates/operator5/operator.html"))
-	err = tpl.ExecuteTemplate(w, "operator_5", data)
+	tpl := template.Must(template.ParseFiles("templates/operator1/operator.html"))
+	err = tpl.ExecuteTemplate(w, "operator_1", data)
 	raven.ReportIfError(err)
 	return
 }

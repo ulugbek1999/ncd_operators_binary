@@ -97,7 +97,7 @@ func FileSave(r *http.Request, fileType, passportSerial string) []string {
 		}
 	case "education":
 		var names []string
-		fhs := r.MultipartForm.File["file"]
+		fhs := r.MultipartForm.File["edu_files"]
 		for _, fh := range fhs {
 			f, _ := fh.Open()
 			file, err := os.Create(fmt.Sprintf("%s/education_%s", mediaPath, fh.Filename))
@@ -112,7 +112,7 @@ func FileSave(r *http.Request, fileType, passportSerial string) []string {
 		return names
 	case "army":
 		var names []string
-		fhs := r.MultipartForm.File["file"]
+		fhs := r.MultipartForm.File["army_files"]
 		for _, fh := range fhs {
 			f, _ := fh.Open()
 			file, err := os.Create(fmt.Sprintf("%s/army_%s", mediaPath, fh.Filename))
@@ -127,7 +127,7 @@ func FileSave(r *http.Request, fileType, passportSerial string) []string {
 		return names
 	case "family":
 		var names []string
-		fhs := r.MultipartForm.File["file"]
+		fhs := r.MultipartForm.File["family_files"]
 		for _, fh := range fhs {
 			f, _ := fh.Open()
 			file, err := os.Create(fmt.Sprintf("%s/army_%s", mediaPath, fh.Filename))
@@ -142,7 +142,7 @@ func FileSave(r *http.Request, fileType, passportSerial string) []string {
 		return names
 	case "reward":
 		var names []string
-		fhs := r.MultipartForm.File["file"]
+		fhs := r.MultipartForm.File["reward_files"]
 		for _, fh := range fhs {
 			f, _ := fh.Open()
 			file, err := os.Create(fmt.Sprintf("%s/reward_%s", mediaPath, fh.Filename))
@@ -157,7 +157,7 @@ func FileSave(r *http.Request, fileType, passportSerial string) []string {
 		return names
 	case "relative":
 		var names []string
-		fhs := r.MultipartForm.File["file"]
+		fhs := r.MultipartForm.File["relative_files"]
 		for _, fh := range fhs {
 			f, _ := fh.Open()
 			file, err := os.Create(fmt.Sprintf("%s/relative_%s", mediaPath, fh.Filename))
@@ -172,7 +172,7 @@ func FileSave(r *http.Request, fileType, passportSerial string) []string {
 		return names
 	case "experience":
 		var names []string
-		fhs := r.MultipartForm.File["file"]
+		fhs := r.MultipartForm.File["exp_files"]
 		for _, fh := range fhs {
 			f, _ := fh.Open()
 			file, err := os.Create(fmt.Sprintf("%s/experience_%s", mediaPath, fh.Filename))
@@ -187,7 +187,7 @@ func FileSave(r *http.Request, fileType, passportSerial string) []string {
 		return names
 	case "language":
 		var names []string
-		fhs := r.MultipartForm.File["file"]
+		fhs := r.MultipartForm.File["lang_files"]
 		for _, fh := range fhs {
 			f, _ := fh.Open()
 			file, err := os.Create(fmt.Sprintf("%s/language_%s", mediaPath, fh.Filename))

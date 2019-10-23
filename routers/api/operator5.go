@@ -12,8 +12,6 @@ import (
 	"strconv"
 )
 
-
-
 // UniversalCreateAPI handles requests from the template of operator 5
 func UniversalCreateAPI(w http.ResponseWriter, r *http.Request) {
 	var (
@@ -107,23 +105,30 @@ func UniversalCreateAPI(w http.ResponseWriter, r *http.Request) {
 	rows, err := s.DB.NamedQuery(q, v)
 	if err != nil {
 		raven.ReportIfError(err)
+		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte(err.Error()))
-		panic(err)
+		return
 	}
 	for rows.Next() {
 		err = rows.Scan(&id)
 		if err != nil {
 			raven.ReportIfError(err)
+			w.WriteHeader(http.StatusBadRequest)
 			w.Write([]byte(err.Error()))
 			return
 		}
 	}
+
+	fmt.Printf("Id: %d\n", id)
 
 	fNames := u.FileSave(r, "passport_image", passportSerial)
 	for i := range fNames {
 		if fNames[i] != "" {
 			_, err = s.UDB.Exec(`UPDATE employee SET passport_image = $1 WHERE 
 			passport_serial = $2`, fNames[i], passportSerial)
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte(err.Error()))
+			return
 		}
 	}
 
@@ -132,7 +137,9 @@ func UniversalCreateAPI(w http.ResponseWriter, r *http.Request) {
 		if fNames[i] != "" {
 			_, err = s.UDB.Exec(`UPDATE employee SET photo_1 = $1 WHERE passport_serial = $2`, fNames[i], passportSerial)
 			raven.ReportIfError(err)
-			panic(err)
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte(err.Error()))
+			return
 		}
 	}
 
@@ -141,7 +148,9 @@ func UniversalCreateAPI(w http.ResponseWriter, r *http.Request) {
 		if fNames[i] != "" {
 			_, err = s.UDB.Exec(`UPDATE employee SET photo_2 = $1 WHERE passport_serial = $2`, fNames[i], passportSerial)
 			raven.ReportIfError(err)
-			panic(err)
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte(err.Error()))
+			return
 		}
 	}
 
@@ -159,25 +168,26 @@ func UniversalCreateAPI(w http.ResponseWriter, r *http.Request) {
 		if fNames[i] != "" {
 			_, err = s.UDB.Exec(`UPDATE employee SET photo_4 = $1 WHERE passport_serial = $2`, fNames[i], passportSerial)
 			raven.ReportIfError(err)
-			panic(err)
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte(err.Error()))
+			return
 		}
 	}
 
 	// Operator 3
 	// Education
-	fNames = u.FileSave(r, "edu_files", passportSerial)
+	// fNames = u.FileSave(r, "education", passportSerial)
 	var eduList []map[string]interface{}
 	if err := json.Unmarshal([]byte(r.FormValue("edu_data")), &eduList); err != nil {
 		panic(err)
 	}
 
-	fmt.Println(eduList)
 	q = `INSERT INTO employee__education (name_ru, address_ru, specialization_ru, date_started,
 		date_finished, additional_ru, is_new, employee_id, type_id)
 		 VALUES (:name_ru, :address_ru, :specialization_ru, :date_started, :date_finished,
 		:additional_ru, :is_new, :employee_id, :type_id) RETURNING id`
+	fmt.Println(q)
 	for i, edu := range eduList {
-		fmt.Println(i)
 		v = map[string]interface{}{
 			"name_ru":           edu["eduName"],
 			"address_ru":        edu["eduAddress"],

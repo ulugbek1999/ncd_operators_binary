@@ -287,10 +287,17 @@ $("#formSendButton").click(function (event) {
         formData.append("passport_image", $("input[name='passport_file']")[0].files[0]);
     }
 
+    var phone = $("#phone").val()
+    var phone_number;
+    if (phone[1] == "9") {
+        phone_number = `${phone.slice(0, 4)}-${phone.slice(4, 6)}-${phone.slice(6, 9)}-${phone.slice(9, 13)}`
+    }
+    console.log(phone_number)
+
     formData.append("full_name_en", $("#fullNameEn").val());
     formData.append("full_name_ru", $("#fullNameRu").val());
     formData.append("birth_date", dateMyFormat($("#birthDate").val()));
-    formData.append("phone", $("#phone").val());
+    formData.append("phone", phone_number);
     formData.append("email", $("#email").val());
     formData.append("gender", $("input[name='gender']:checked").val());
     formData.append("passport_serial", $("#passportSerial").val());

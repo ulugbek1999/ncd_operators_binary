@@ -1,4 +1,26 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Initializing filepond
+    FilePond.registerPlugin(
+
+        // encodes the file as base64 data
+        FilePondPluginFileEncode,
+
+        // validates the size of the file
+        FilePondPluginFileValidateSize,
+
+        // corrects mobile image orientation
+        FilePondPluginImageExifOrientation,
+
+        // previews dropped images
+        FilePondPluginImagePreview
+    );
+
+    var fEdu = FilePond.create(document.querySelector(`input.filepondEducation`));
+    var fMil = FilePond.create(document.querySelector(`input.filepondMilitary`));
+    var fExp = FilePond.create(document.querySelector(`input.filepondExperience`));
+    var fMar = FilePond.create(document.querySelector(`input.filepondMarital`));
+    var fLang = FilePond.create(document.querySelector(`input.filepondLanguage`));
+    var fRec = FilePond.create(document.querySelector(`input.filepondReceived`));
 
     // Function for handling format of the date
     function dateMyFormat(date) {
@@ -70,7 +92,6 @@ document.addEventListener("DOMContentLoaded", () => {
         var eduGradDate = document.querySelector("#eduGradDate1").value
         var eduStartDate = document.querySelector("#eduStartDate").value
         var eduAddit = document.querySelector("#eduAddit").value
-        var eduFiles = document.querySelector("#eduFiles")
         
         var eduData = {
             eduType: eduType,
@@ -80,9 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
             eduGradDate: dateMyFormat(eduGradDate),
             eduStartDate: dateMyFormat(eduStartDate),
             eduAddit: eduAddit,
-            eduFiles: eduFiles.files[0]
         }
-        console.log(dateMyFormat(eduGradDate))
         educations.push(eduData)
         const eduTemplate = `
 <div class="op3View-item edu-all-${eduCounter}">
@@ -144,12 +163,10 @@ document.addEventListener("DOMContentLoaded", () => {
     langSave.addEventListener('click', () => {
         var langName = document.querySelector("#langName").value
         var langLevel = document.querySelector("#langLevel").value
-        var langFiles = document.querySelector("#langFiles")
 
         var langData = {
             langName: langName,
             langLevel: langLevel,
-            langFiles: langFiles.files[0]
         }
         languages.push(langData)
         const langTemplate = `
@@ -196,7 +213,6 @@ document.addEventListener("DOMContentLoaded", () => {
         var milDateStarted = document.querySelector("#milDateStarted").value
         var milDateGraduated = document.querySelector("#milDateGraduated").value
         var milRank = document.querySelector("#milRank").value
-        var armyFiles = document.querySelector("#armyFiles")
 
         var armyData = {
             milName: milName,
@@ -205,7 +221,6 @@ document.addEventListener("DOMContentLoaded", () => {
             milDateStarted: dateMyFormat(milDateStarted),
             milDateGraduated: dateMyFormat(milDateGraduated),
             milRank: milRank,
-            armyFiles: armyFiles.files[0]
         }
         armies.push(armyData)
         const armyTemplate = `
@@ -264,12 +279,10 @@ document.addEventListener("DOMContentLoaded", () => {
     rewSave.addEventListener('click', () => {
         var recName = document.querySelector("#recName").value
         var recComment = document.querySelector("#recComment").value
-        var rewFiles = document.querySelector("#rewFiles")
 
         var rewData = {
             recName: recName,
             recComment: recComment,
-            rewFiles: rewFiles.files[0]
         }
         rewards.push(rewData)
         const rewTemplate = `
@@ -311,12 +324,10 @@ document.addEventListener("DOMContentLoaded", () => {
     familySave.addEventListener("click", () => {
         var marStatus = document.querySelector("#marStatus").value
         var childrenAmount = document.querySelector("#childrenAmount").value
-        var familyFiles = document.querySelector("#familyFiles")
 
         var famData = {
             marStatus: marStatus,
             childrenAmount: childrenAmount,
-            familyFiles: familyFiles.files[0]
         }
         families.push(famData)
         const familyTemplate = `
@@ -362,7 +373,6 @@ document.addEventListener("DOMContentLoaded", () => {
         var expPosition = document.querySelector("#expPosition").value
         var expSubDivision = document.querySelector("#expSupDibision").value
         var expAddress = document.querySelector("#expAddress").value
-        var expFiles = document.querySelector("#expFiles")
 
         var expData = {
             expOrg: expOrg,
@@ -371,7 +381,6 @@ document.addEventListener("DOMContentLoaded", () => {
             expPosition: expPosition,
             expSubDivision: expSubDivision,
             expAddress: expAddress,
-            expFiles: expFiles.files[0]
         }
         exps.push(expData)
 
@@ -433,11 +442,19 @@ document.addEventListener("DOMContentLoaded", () => {
         var passportExpires = document.getElementById("passportExpires").value
         var passportGivendate = document.getElementById("passportGivendate").value
         
+        var phone_number;
+        if (phone[1] == "9") {
+            phone_number = `${phone.slice(0, 4)}-${phone.slice(4, 6)}-${phone.slice(6, 9)}-${phone.slice(9, 13)}`
+        }
+        else {
+            phone_number = phone
+        }
+
         // Operator 1
         formData.append('full_name_en', fullNameEn)
         formData.append('full_name_ru', fullNameRu)
         formData.append('birth_date', dateMyFormat(birthDate))
-        formData.append('phone', phone)
+        formData.append('phone', phone_number)
         formData.append('email', email)
         formData.append("gender", $("input[name='gender']:checked").val());
         formData.append('passport_serial', passportSerial)
@@ -472,79 +489,60 @@ document.addEventListener("DOMContentLoaded", () => {
         // Operator 3
         // Education
         formData.append("edu_data", JSON.stringify(educations))
-        if (educations.length >= 1) {
-            educations.forEach((education) => {
-                if (education.eduFiles != undefined) {
-                    formData.append('edu_files', education.eduFiles)
-                }
-                else {
-                    formData.append('edu_files', new File(["foo", "bar"], 'nil.txt'))
-                }
-            })
+        var educationCountFile = fEdu.getFiles().length;
+        for (var j = 0; j < educationCountFile; j++) {
+            let f = fEdu.getFiles()[j].file;
+            let fImage = new File([f], f.name, {type: f.type});
+            formData.append(`edu_files`, fImage);
         }
         // Language
         formData.append("lang_data", JSON.stringify(languages))
-        if (languages.length >= 1) {
-            languages.forEach((language) => {
-                if (language.langFiles != undefined) {
-                    formData.append('lang_files', language.langFiles)
-                }
-                else {
-                    formData.append('lang_files', new File(["foo", "bar"], "nil.txt"))
-                }
-            })
+        var languageCountFile = fLang.getFiles().length;
+        for (var j = 0; j < languageCountFile; j++) {
+            //languageFormData.append(`file`, fLang[i].getFiles()[j].file);
+            let f = fLang.getFiles()[j].file;
+            let fImage = new File([f], f.name, {type: f.type});
+            formData.append(`lang_files`, fImage);
         }
 
         // Army
         formData.append("army_data", JSON.stringify(armies))
-        if (armies.length >= 1) {
-            armies.forEach((army) => {
-                if (army.armyFiles != undefined) {
-                    formData.append('army_files', army.armyFiles)
-                }
-                else {
-                    formData.append('army_files', new File(["foo", "bar"], "nil.txt"))
-                }
-            })
+        var militaryCountFile = fMil.getFiles().length;
+        for (let j = 0; j < militaryCountFile; j++) {
+            //militaryFormData.append(`file`, fMil[i].getFiles()[j].file);
+            let f = fMil.getFiles()[j].file;
+            let fImage = new File([f], f.name, {type: f.type});
+            formData.append(`army_files`, fImage);
         }
 
         // Reward
         formData.append("reward_data", JSON.stringify(rewards))
-        if (rewards.length >= 1) {
-            rewards.forEach((reward) => {
-                if (reward.rewFiles != undefined) {
-                    formData.append('reward_files', reward.rewFiles)
-                }
-                else {
-                    formData.append('reward_files', new File(["foo", "bar"], "nil.txt"))
-                }
-            })
+        var receivedCountFile = fRec.getFiles().length;
+        for (var j = 0; j < receivedCountFile; j++) {
+            //receivedFormData.append(`file`, fRec[i].getFiles()[j].file);
+            let f = fRec.getFiles()[j].file;
+            let fImage = new File([f], f.name, {type: f.type});
+            formData.append(`reward_files`, fImage);
         }
 
         // Family
-        formData.append("reward_data", JSON.stringify(families))
-        if (families.length >= 1) {
-            families.forEach((family) => {
-                if (family.familyFiles != undefined) {
-                    formData.append('family_files', reward.familyFiles)
-                }
-                else {
-                    formData.append('family_files', new File(["foo", "bar"], "nil.txt"))
-                }
-            })
+        formData.append("family_data", JSON.stringify(families))
+        var maritalCountFile = fMar.getFiles().length;
+        for (let j = 0; j < maritalCountFile; j++) {
+           //maritalFormData.append(`file`, fMar[i].getFiles()[j].file);
+           let f = fMar.getFiles()[j].file;
+           let fImage = new File([f], f.name, {type: f.type});
+          formData.append(`family_files`, fImage);
         }
 
         // Experience
         formData.append("exp_data", JSON.stringify(exps))
-        if (exps.length >= 1) {
-            exps.forEach((exp) => {
-                if (exp.expFiles != undefined) {
-                    formData.append('exp_files', exp.expFiles)
-                }
-                else {
-                    formData.append('exp_files', new File(["foo", "bar"], "nil.txt"))
-                }
-            })
+        var experienceCountFile = fExp.getFiles().length;
+        for (let j = 0; j < experienceCountFile; j++) {
+            //experienceFormData.append(`file`, fExp[i].getFiles()[j].file);
+            let f = fExp.getFiles()[j].file;
+            let fImage = new File([f], f.name, {type: f.type});
+            formData.append(`exp_files`, fImage);
         }
 
         // Operator 5
@@ -567,10 +565,17 @@ document.addEventListener("DOMContentLoaded", () => {
             contentType: false,
             processData: false,
             success() {
-                alert("success")
+                var s = document.getElementById("mainSuccess");
+                s.className = "show";
+                setTimeout(function(){
+                    s.className = s.className.replace("show", "");
+                    location.reload();
+                }, 1500);
             },
             error() {
-                alert("error")
+                var y = document.getElementById("mainError");
+                y.className = "show";
+                setTimeout(function(){ y.className = y.className.replace("show", ""); }, 3000);
             }
         })
     

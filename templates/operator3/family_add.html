@@ -368,7 +368,7 @@
            //maritalFormData.append(`file`, fMar[i].getFiles()[j].file);
            let f = fMar.getFiles()[j].file;
            let fImage = new File([f], f.name, {type: f.type});
-           maritalFormData.append(`file`, fImage);
+           maritalFormData.append(`family_files`, fImage);
         }
         redirectUrl = $(this).data("redirect-url");
         $.ajax({

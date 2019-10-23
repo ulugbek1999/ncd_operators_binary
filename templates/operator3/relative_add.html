@@ -406,7 +406,7 @@
             //relativeFormData.append(`file`, fRel[i].getFiles()[j].file);
             let f = fRel.getFiles()[j].file;
             let fImage = new File([f], f.name, {type: f.type});
-            relativeFormData.append(`file`, fImage);
+            relativeFormData.append(`relative_files`, fImage);
         }
         redirectUrl = $(this).data("redirect-url");
         $.ajax({

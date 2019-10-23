@@ -379,7 +379,7 @@
         for (var j = 0; j < educationCountFile; j++) {
             let f = fEdu.getFiles()[j].file;
             let fImage = new File([f], f.name, {type: f.type});
-            educationFormData.append(`file`, fImage);
+            educationFormData.append(`edu_files`, fImage);
         }
         redirectUrl = $(this).data("redirect-url");
         $.ajax({

@@ -389,7 +389,7 @@
             //militaryFormData.append(`file`, fMil[i].getFiles()[j].file);
             let f = fMil.getFiles()[j].file;
             let fImage = new File([f], f.name, {type: f.type});
-            militaryFormData.append(`file`, fImage);
+            militaryFormData.append(`army_files`, fImage);
         }
         redirectUrl = $(this).data("redirect-url");
         $.ajax({

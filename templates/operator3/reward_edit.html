@@ -408,7 +408,7 @@
             //receivedFormData.append(`file`, fRec[i].getFiles()[j].file);
             let f = fRec.getFiles()[j].file;
             let fImage = new File([f], f.name, {type: f.type});
-            receivedFormData.append(`file`, fImage);
+            receivedFormData.append(`reward_files`, fImage);
         }
         redirectUrl = $(this).data("redirect-url");
         $.ajax({
