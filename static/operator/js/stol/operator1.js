@@ -291,6 +291,8 @@ $("#formSendButton").click(function (event) {
     var phone_number;
     if (phone[1] == "9") {
         phone_number = `${phone.slice(0, 4)}-${phone.slice(4, 6)}-${phone.slice(6, 9)}-${phone.slice(9, 13)}`
+    } else {
+        phone_number = phone;
     }
     console.log(phone_number)
 
