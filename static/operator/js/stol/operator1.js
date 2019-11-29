@@ -294,7 +294,6 @@ $("#formSendButton").click(function (event) {
     } else {
         phone_number = phone;
     }
-    console.log(phone_number)
 
     formData.append("full_name_en", $("#fullNameEn").val());
     formData.append("full_name_ru", $("#fullNameRu").val());

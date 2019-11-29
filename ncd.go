@@ -15,7 +15,7 @@ import (
 
 func init() {
 	sentry.Init(sentry.ClientOptions{
-		Dsn: "https://7b2a6b831f744f0786eafcf341c9e857@sentry.io/1521097",
+		Dsn: "https://c535a7563f14461592d08e77b16b05c6@sentry.io/1831691",
 	})
 	err := godotenv.Load()
 	if err != nil {
