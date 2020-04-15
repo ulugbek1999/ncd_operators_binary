@@ -11,16 +11,9 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/urfave/cli"
 )
 
-func StartWebServer(c *cli.Context) {
-	if c.IsSet("ipaddress") {
-		s.IpAddress = c.String("ipaddress")
-	}
-	if c.IsSet("port") {
-		s.Port = c.String("port")
-	}
+func StartWebServer() {
 	addr := fmt.Sprintf("%s:%s", s.IpAddress, s.Port)
 	if s.Mux == nil {
 		s.Mux = mux.NewRouter()

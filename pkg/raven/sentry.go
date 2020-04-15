@@ -6,8 +6,8 @@ import (
 )
 
 func ReportIfError(err error) {
-	if err != nil {
-		sentry.CaptureException(err)
-		sentry.Flush(time.Second * 5)
-	}
+
+	sentry.CaptureException(err)
+	sentry.Flush(time.Second * 5)
+
 }

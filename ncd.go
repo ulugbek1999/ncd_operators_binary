@@ -2,15 +2,13 @@ package main
 
 import (
 	"log"
-	"ncd_operators/cmd"
 	m "ncd_operators/models"
 	"ncd_operators/pkg/raven"
+	"ncd_operators/pkg/server"
 	s "ncd_operators/pkg/settings"
-	"os"
 
 	"github.com/getsentry/sentry-go"
 	"github.com/joho/godotenv"
-	"github.com/urfave/cli"
 )
 
 func init() {
@@ -28,14 +26,5 @@ func init() {
 }
 
 func main() {
-	app := cli.NewApp()
-	app.Name = "NCD Operators module"
-	app.Description = ""
-	app.Usage = ""
-	app.Version = s.APP_VERSION
-	app.Commands = []cli.Command{
-		cmd.RunServer,
-	}
-	err := app.Run(os.Args)
-	raven.ReportIfError(err)
+	server.StartWebServer()
 }
